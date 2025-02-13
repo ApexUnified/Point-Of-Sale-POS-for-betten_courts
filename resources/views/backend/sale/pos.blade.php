@@ -489,10 +489,10 @@
                                         {{ trans('file.PayPal') }}</button>
                                 </div>
                             @endif
-                            <div class="column-5">
+                            {{-- <div class="column-5">
                                 <button style="background-color: #e28d02" type="button" class="btn btn-sm btn-custom"
                                     id="draft-btn"><i class="dripicons-flag"></i> {{ trans('file.Draft') }}</button>
-                            </div>
+                            </div> --}}
                             @if (in_array('cheque', $options))
                                 <div class="column-5">
                                     <button style="background-color: #fd7272" type="button"
@@ -1815,6 +1815,9 @@
             localStorageTempUnitName = getSavedValue("localStorageTempUnitName").split(",,");
             localStorageSaleUnitOperator = getSavedValue("localStorageSaleUnitOperator").split(",,");
             localStorageSaleUnitOperationValue = getSavedValue("localStorageSaleUnitOperationValue").split(",,");
+
+
+
             /*localStorageQty.pop();
             localStorage.setItem("localStorageQty", localStorageQty);*/
             for (var i = 0; i < localStorageQty.length; i++) {
@@ -2810,9 +2813,6 @@
                     var flag = 1;
                     // console.log(data);
                     if (pre_qty > 0) {
-                        /*if(pre_qty)
-                            var qty = parseFloat(pre_qty) + data[15];
-                        else*/
                         var qty = data[15];
                         $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ') .qty').val(qty);
                         pos = product_code.indexOf(data[1]);
@@ -2824,19 +2824,15 @@
                             product_price[rowindex] = parseFloat(data[2] * currency['exchange_rate']) +
                                 parseFloat(data[2] * currency['exchange_rate'] * customer_group_rate);
                         }
+                        checkDiscount(String(qty), true);
                         flag = 0;
                         checkQuantity(String(qty), true);
                         flag = 0;
-                        localStorage.setItem("current_user_id", $("meta[name='current_user_id']").attr(
-                            "content"));
 
                         localStorage.setItem("tbody-id", $("table.order-list tbody").html());
                     }
                     $("input[name='product_code_name']").val('');
                     if (flag) {
-                        localStorage.setItem("current_user_id", $("meta[name='current_user_id']").attr(
-                            "content"));
-
                         addNewProduct(data);
                     }
                 }

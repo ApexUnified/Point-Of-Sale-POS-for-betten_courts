@@ -59,10 +59,55 @@ window.Echo = new Echo({
 
 
 const current_user_id = $("meta[name='current_user_id']").attr("content");
-
+const currency = $("meta[name='currency']").attr("content");
 window.Echo.private(`SaleProductUpdateCD.${current_user_id}`)
     .listen("SaleProductUpdateCD", (e) => {
         console.log("Event Fired for " + current_user_id);
         console.log(e.product);
+
+
+        let totalprice = null;
+        let productId = String(e.product[1]); // Convert to string if necessary
+
+        let existingItem = $(".item[data-product-id='" + productId + "']");
+        if (existingItem.length === 0) {
+            $(".items-container").append(`
+                    <div class="item" data-product-id="${productId}">
+                       <span class="item-name">${e.product[0]} </br> ${productId} </span>
+                       <span class="item-quantity">${e.product[5]}</span>
+                       <span class="item-price">${currency} ${e.product[2]}</span>
+                       <span class="item-subtotal">${currency} ${e.product[2]}</span>
+                   </div>
+               `);
+        } else {
+            let currentQuantity = parseInt(existingItem.find(".item-quantity").text()) || 0;
+            console.log(currentQuantity);
+
+            let newQuantity = currentQuantity + parseInt(e.product[5]);
+            console.log("Updated Quantity:", newQuantity);
+
+            existingItem.find(".item-quantity").text(newQuantity);
+            existingItem.find(".item-price").text(`${currency} ${e.product[2]}`);
+
+            let totalPrice = newQuantity * parseFloat(e.product[2]);
+            existingItem.find(".item-subtotal").text(`${currency} ${totalPrice.toFixed(2)}`);
+
+        }
+
+        var total = 0;
+        $(".items-container .item-subtotal").each(function () {
+            var value = parseFloat($(this).text().replace(/[^0-9.]/g, ''));
+            if (!isNaN(value)) {
+                total += value;
+            }
+        });
+
+        $(".total-row.grand-total span:last-child").text(currency + " " + total.toFixed(2));
+
+
+
+
+
+
 
     });

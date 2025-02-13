@@ -1,5 +1,12 @@
 @php
     $user_id = auth()->user()->id;
+    $setting = \App\Models\GeneralSetting::first();
+    $currency_id = $setting->currency;
+    $currency_symbol = null;
+    if (!empty($currency_id)) {
+        $currency = \App\Models\Currency::find($currency_id);
+        $currency_symbol = $currency->code;
+    }
 @endphp
 
 <!DOCTYPE html>
@@ -16,6 +23,7 @@
         <meta name="robots" content="all,follow">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="current_user_id" content="{{ $user_id }}">
+        <meta name="currency" content="{{ $currency_symbol }}">
         <!-- Bootstrap CSS-->
         <link rel="stylesheet" href="<?php echo asset('vendor/bootstrap/css/bootstrap.min.css'); ?>" type="text/css">
         <link rel="preload" href="<?php echo asset('vendor/bootstrap-toggle/css/bootstrap-toggle.min.css'); ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
