@@ -1,3 +1,7 @@
+@php
+    $user_id = auth()->user()->id;
+@endphp
+
 <!DOCTYPE html>
 <html dir="@if (Config::get('app.locale') == 'ar' || $general_setting->is_rtl) {{ 'rtl' }} @endif">
 
@@ -11,7 +15,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="all,follow">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-
+        <meta name="current_user_id" content="{{ $user_id }}">
         <!-- Bootstrap CSS-->
         <link rel="stylesheet" href="<?php echo asset('vendor/bootstrap/css/bootstrap.min.css'); ?>" type="text/css">
         <link rel="preload" href="<?php echo asset('vendor/bootstrap-toggle/css/bootstrap-toggle.min.css'); ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -199,7 +203,7 @@
     class="@if ($theme == 'dark') dark-mode dripicons-brightness-low @endif  @if (Route::current()->getName() == 'sale.pos') pos-page @endif"
     onload="myFunction()">
     <div id="loader"></div>
-
+    @vite('resources/js/app.js')
     @php
         $sidebar = $sidebar ?? true;
     @endphp
@@ -327,13 +331,13 @@
                         </div>
                         <?php
                         // $empty_database_permission_active = $role_has_permissions_list->where('name', 'empty_database')->first();
-                        
+
                         $sale_add_permission_active = $role_has_permissions_list->where('name', 'sales-add')->first();
-                        
+
                         $product_qty_alert_active = $role_has_permissions_list->where('name', 'product-qty-alert')->first();
-                        
+
                         $general_setting_permission_active = $role_has_permissions_list->where('name', 'general_setting')->first();
-                        
+
                         ?>
                         @if ($sale_add_permission_active)
                             <li class="nav-item"><a class="btn-pos btn-sm" href="{{ route('sale.pos') }}"><i
@@ -1378,6 +1382,7 @@
             <script type="text/javascript" src="{{ asset('js/datatablesfixedheaders.js') }}"></script>
             <script type="text/javascript" src="{{ asset('js/datatablesResponsive.js') }}"></script>
             <script type="text/javascript" src="{{ asset('js/boosttrapResponsive.js') }}"></script>
+
         @endif
     @endif
     @stack('scripts')

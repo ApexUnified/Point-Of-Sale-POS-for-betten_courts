@@ -188,7 +188,7 @@
 
 <body class="pos-page" onload="myFunction()">
     <div id="loader"></div>
-
+    @vite('resources/js/app.js')
     <div style="display:none;" id="content" class="animate-bottom">
         @yield('content')
     </div>
@@ -309,7 +309,7 @@
                         $lims_warehouse_list = DB::table('warehouses')->where('is_active', true)->get();
                     }
                     $lims_account_list = \App\Models\Account::where('is_active', true)->get();
-                    
+
                     ?>
                     <div class="row">
                         <div class="col-md-6 form-group">

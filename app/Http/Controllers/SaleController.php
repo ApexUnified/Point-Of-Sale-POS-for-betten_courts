@@ -1578,8 +1578,6 @@ class SaleController extends Controller
     public function limsProductSearch(Request $request)
     {
 
-
-
         $todayDate = date('Y-m-d');
         $product_code = explode("(", $request['data']);
         $product_info = explode("?", $request['data']);
@@ -1693,6 +1691,8 @@ class SaleController extends Controller
         $product[] = $qty;
         $product[] = $lims_product_data->wholesale_price;
         $product[] = $lims_product_data->cost;
+        \Log::info("Firing Event");
+        \Log::info($product);
         broadcast(new SaleProductUpdateCD($product, Auth::id()));
         return $product;
     }

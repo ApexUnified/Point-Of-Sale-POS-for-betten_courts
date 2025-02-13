@@ -893,11 +893,20 @@ table#product-table.dataTable {
 }
 
 .brand-img img,
-.category-img img,
-.product-img img {
+.category-img img {
     height: 31px;
     max-width: 100%;
     width: auto;
+    border-radius: 2rem;
+}
+
+
+
+.product-img img {
+    height: 80px !important;
+    max-width: 100%;
+    width: auto;
+    object-fit: cover;
     border-radius: 2rem;
 }
 

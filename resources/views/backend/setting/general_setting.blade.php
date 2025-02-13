@@ -248,7 +248,24 @@
                                         @enderror
                                     </div>
                                 </div>
+
+
+                                <div class="col-md-4 align-content-center">
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <input class="form-check-input" type="checkbox" name="pos_search"
+                                                id="pos_search"
+                                                {{ $lims_general_setting_data->pos_search == 1 ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="pos_search">POS Search</label>
+
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
+
+
+
 
                             <div class="form-group">
                                 <input type="submit" value="{{ trans('file.submit') }}" class="btn btn-primary">

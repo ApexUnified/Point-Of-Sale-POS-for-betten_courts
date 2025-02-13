@@ -92,6 +92,8 @@ class SettingController extends Controller
             'display_section' => 'required'
         ]);
 
+
+
         $data = $request->except('site_logo');
         //return $data;
         //writting timezone info in .env file
@@ -134,6 +136,13 @@ class SettingController extends Controller
             $logo->move('public/logo', $logoName);
             $general_setting->site_logo = $logoName;
         }
+
+        if ($request->filled("pos_search")) {
+            $general_setting->pos_search = 1;
+        } else {
+            $general_setting->pos_search = 0;
+        }
+
         $general_setting->save();
         cache()->forget('general_setting');
 

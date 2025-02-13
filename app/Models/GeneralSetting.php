@@ -50,6 +50,7 @@ class GeneralSetting extends Model
         "paydunya_token",
         "ssl_store_id",
         "ssl_store_password",
-        "display_section"
+        "display_section",
+        "pos_search"
     ];
 }

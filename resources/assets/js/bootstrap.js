@@ -44,17 +44,29 @@ if (token) {
  * allows your team to easily build robust real-time web applications.
  */
 
-import Echo from 'laravel-echo'
+// import Echo from 'laravel-echo'
 
-window.Pusher = require('pusher-js');
+// import Pusher from 'pusher-js';
 
-window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: process.env.MIX_PUSHER_APP_KEY,
-    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-    encrypted: true
-});
+// window.Pusher = Pusher;
 
-const current_user_id = $("meta['name']");
+// window.Echo = new Echo({
+//     broadcaster: 'reverb',
+//     key: import.meta.env.VITE_REVERB_APP_KEY,
+//     wsHost: import.meta.env.VITE_REVERB_HOST,
+//     wsPort: import.meta.env.VITE_REVERB_PORT ?? 80,
+//     wssPort: import.meta.env.VITE_REVERB_PORT ?? 443,
+//     forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? 'https') === 'https',
+//     enabledTransports: ['ws', 'wss'],
+// });
 
-// window.Echo.listen( `` (e) => )
+
+
+// const current_user_id = $("meta[name='current_user_id']").attr("content");
+// console.log(current_user_id);
+
+// window.Echo.private(`SaleProductUpdateCD.${current_user_id}`)
+//     .listen("SaleProductUpdateCD", (e) => {
+//         console.log("Event Fired for " + current_user_id);
+
+//     });

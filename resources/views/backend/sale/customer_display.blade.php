@@ -1,5 +1,15 @@
 @extends('backend.layout.main')
 
+@php
+    $setting = \App\Models\GeneralSetting::first();
+    $currency_id = $setting->currency;
+    $currency_symbol = null;
+    if (!empty($currency_id)) {
+        $currency = \App\Models\Currency::find($currency_id);
+        $currency_symbol = $currency->code;
+    }
+@endphp
+
 @push('css')
     <style>
         * {
@@ -127,11 +137,9 @@
         <div class="container m-auto">
             <div class="header">
                 <h1>Customer Display</h1>
-                <div class="transaction-info">Transaction #<span id="transaction-id">12345</span></div>
             </div>
 
             <div class="items-container" id="items-list">
-                <!-- Items will be added here dynamically -->
             </div>
 
             <div class="summary">
@@ -157,75 +165,3 @@
 
     </section>
 @endsection
-
-@push('scripts')
-    <script>
-        // Sample data structure for a product
-        class Product {
-
-            constructor(name, price) {
-                this.name = name;
-                this.price = price;
-            }
-        }
-
-        // Sample products database
-        const products = {
-            'P001': new Product('Organic Banana', 0.99),
-            'P002': new Product('Whole Grain Bread', 3.49),
-            'P003': new Product('Fresh Milk 1L', 2.99),
-            'P004': new Product('Free Range Eggs', 4.99),
-            'P005': new Product('Chocolate Bar', 1.99)
-        };
-
-        // Shopping cart to store current items
-        let cart = [];
-
-        // Function to add item to cart
-        function addItem(productId, quantity = 1) {
-            const product = products[productId];
-            if (product) {
-                cart.push({
-                    name: product.name,
-                    quantity: quantity,
-                    price: product.price,
-                    total: product.price * quantity
-                });
-                updateDisplay();
-            }
-        }
-
-        // Function to update the display
-        function updateDisplay() {
-            const itemsList = document.getElementById('items-list');
-            itemsList.innerHTML = '';
-
-            let subtotal = 0;
-
-            cart.forEach(item => {
-                const itemElement = document.createElement('div');
-                itemElement.className = 'item';
-                itemElement.innerHTML = `
-                <span class="item-name">${item.name}</span>
-                <span class="item-quantity">×${item.quantity}</span>
-                <span class="item-price">$${item.price.toFixed(2)}</span>
-                <span class="item-total">$${item.total.toFixed(2)}</span>
-            `;
-                itemsList.appendChild(itemElement);
-                subtotal += item.total;
-            });
-
-            const tax = subtotal * 0.1;
-            const total = subtotal + tax;
-
-            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
-            document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
-            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
-        }
-
-        // Demo: Add some items automatically
-        setTimeout(() => addItem('P001', 3), 1000);
-        setTimeout(() => addItem('P003', 2), 2000);
-        setTimeout(() => addItem('P004', 1), 3000);
-    </script>
-@endpush

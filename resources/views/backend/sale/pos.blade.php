@@ -27,6 +27,7 @@
     </style>
 @endsection
 
+
 @section('content')
     @if ($errors->has('phone_number'))
         <div class="alert alert-danger alert-dismissible text-center">
@@ -49,6 +50,7 @@
                 data-dismiss="alert" aria-label="Close"><span
                     aria-hidden="true">&times;</span></button>{{ session()->get('not_permitted') }}</div>
     @endif
+
     <!-- Side Navbar -->
     <nav class="side-navbar shrink">
         <span class="brand-big">
@@ -336,13 +338,16 @@
                                                 </div>
                                             @endif
                                         @endforeach
-                                        <div class="col-md-12">
-                                            <div class="search-box form-group">
-                                                <input type="text" name="product_code_name"
-                                                    id="lims_productcodeSearch"
-                                                    placeholder="Scan/Search product by name/code" class="form-control" />
+                                        @if ($general_setting->pos_search == 1)
+                                            <div class="col-md-12">
+                                                <div class="search-box form-group">
+                                                    <input type="text" name="product_code_name"
+                                                        id="lims_productcodeSearch"
+                                                        placeholder="Scan/Search product by name/code"
+                                                        class="form-control" />
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
                                     </div>
                                     <div class="form-group">
                                         <div class="table-responsive transaction-list">
@@ -2803,7 +2808,7 @@
                 },
                 success: function(data) {
                     var flag = 1;
-                    console.log(data);
+                    // console.log(data);
                     if (pre_qty > 0) {
                         /*if(pre_qty)
                             var qty = parseFloat(pre_qty) + data[15];
