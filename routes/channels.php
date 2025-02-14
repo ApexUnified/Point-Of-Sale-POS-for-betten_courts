@@ -16,3 +16,9 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel("SaleProductUpdateCD.{user_id}", function ($user, $user_id) {
     return (int) $user->id === (int) $user_id;
 });
+Broadcast::channel("SaleCustomerDisplayProductUpdate.{user_id}", function ($user, $user_id) {
+    return (int) $user->id === (int) $user_id;
+});
+Broadcast::channel("ClearCustomerDisplay.{user_id}", function ($user, $user_id) {
+    return (int) $user->id === (int) $user_id;
+});

@@ -132,11 +132,6 @@
         </div>
 
         <div class="summary">
-
-            {{-- <div class="total-row">
-                <span>Tax (10%)</span>
-                <span>$1.24</span>
-            </div> --}}
             <div class="total-row grand-total">
                 <span>Total</span>
                 <span>00,00</span>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ClearCustomerDisplay;
+use App\Events\SaleCustomerDisplayProductUpdate;
 use DB;
 use Mail;
 use Cache;
@@ -1732,6 +1734,7 @@ class SaleController extends Controller
             $price = $lims_product_data->price;
 
         $data = [$price, $lims_product_data->promotion];
+        Log::info($data);
         return $data;
     }
 
@@ -2437,6 +2440,7 @@ class SaleController extends Controller
             ->selectRaw('SUM(grand_total) as grand_total,SUM(paid_amount) as paid_amount')
             ->first();
         $totalDue = $saleData->grand_total - $returned_amount - $saleData->paid_amount;
+        broadcast(new ClearCustomerDisplay(Auth::id()));
         if ($lims_pos_setting_data->invoice_option == 'A4') {
             return view('backend.sale.a4_invoice', compact('lims_sale_data', 'warehouse', 'currency_code', 'lims_product_sale_data', 'lims_biller_data', 'lims_warehouse_data', 'lims_customer_data', 'lims_payment_data', 'numberInWords', 'paid_by_info', 'sale_custom_fields', 'customer_custom_fields', 'product_custom_fields', 'qrText', 'totalDue'));
         } elseif ($lims_sale_data->sale_type == 'online') {
@@ -3399,5 +3403,40 @@ class SaleController extends Controller
     public function SaleCustomerDisplay()
     {
         return view("backend.sale.customer_display");
+    }
+
+
+    public function SaleCustomerDisplayProductUpdate(Request $request)
+    {
+        $product_unit_price = explode(",", $request->input("product_unit_price"));
+        $product_discount = explode(",", $request->input("product_discount"));
+        $product_subtotal = explode(",", $request->input("product_subtotal"));
+        $product_code = explode(",", $request->input("product_code"));
+        $product_name = explode(",", $request->input("product_name"));
+        $product_qty = explode(",", $request->input("product_qty"));
+        $tax_name = explode(",", $request->input("tax_name"));
+        $tax_rate = explode(",", $request->input("tax_rate"));
+
+
+        $product = [
+            "product_code" => $product_code[0],
+            "product_qty"  => $product_qty[0],
+            "product_discount" => $product_discount[0],
+            "product_unit_price" => $product_unit_price[0],
+            "product_subtotal" => $product_subtotal[0],
+            "product_name" => $product_name[0],
+            "tax_name" => $tax_name[0],
+            "tax_rate" => $tax_rate[0],
+            'order_tax_rate' => $request->input("order_tax_rate"),
+            'order_discount_type' => $request->input("order_discount_type"),
+            'order_discount_value' => $request->input("order_discount_value", 0),
+            'copoun_grand_total' => $request->input("copoun_grand_total", 0),
+            'copoun_type' => $request->input("copoun_type"),
+            'copoun_amount' => $request->input("copoun_amount")
+        ];
+
+        Log::info($product);
+        broadcast(new SaleCustomerDisplayProductUpdate($product, Auth::id()));
+        return response()->json(["status" => true]);
     }
 }

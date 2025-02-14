@@ -308,6 +308,7 @@ Route::group(['middleware' => ['common', 'auth', 'active']], function () {
         Route::get('sales/get-sold-items/{id}', 'getSoldItem');
         Route::post('sales/sendsms', 'sendSMS')->name('sale.sendsms');
         Route::get("/sale-customer-display-screen", "SaleCustomerDisplay")->name("sale.customer.display");
+        Route::post("/sale/customer-display-product-update", "SaleCustomerDisplayProductUpdate");
     });
     Route::resource('sales', SaleController::class);
 

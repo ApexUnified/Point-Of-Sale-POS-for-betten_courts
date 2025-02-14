@@ -204,7 +204,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'D:\\ABDULLAH WORK (ME)\\Laravel Portfolio Projects\\POS\\Betten_Courts POS Changes (On Working)\\betten_courts\\storage\\framework/cache/data',
+        'path' => 'D:\\ABDULLAH WORK\\Laravel Portfolio Projects\\POS\\Betten_Courts POS\\betten_courts\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -354,7 +354,7 @@
     array (
       'enabled' => true,
       'driver' => 'file',
-      'path' => 'D:\\ABDULLAH WORK (ME)\\Laravel Portfolio Projects\\POS\\Betten_Courts POS Changes (On Working)\\betten_courts\\storage\\debugbar',
+      'path' => 'D:\\ABDULLAH WORK\\Laravel Portfolio Projects\\POS\\Betten_Courts POS\\betten_courts\\storage\\debugbar',
       'connection' => NULL,
       'provider' => '',
       'hostname' => '127.0.0.1',
@@ -462,12 +462,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'D:\\ABDULLAH WORK (ME)\\Laravel Portfolio Projects\\POS\\Betten_Courts POS Changes (On Working)\\betten_courts\\storage\\app',
+        'root' => 'D:\\ABDULLAH WORK\\Laravel Portfolio Projects\\POS\\Betten_Courts POS\\betten_courts\\storage\\app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'D:\\ABDULLAH WORK (ME)\\Laravel Portfolio Projects\\POS\\Betten_Courts POS Changes (On Working)\\betten_courts\\storage\\app/public',
+        'root' => 'D:\\ABDULLAH WORK\\Laravel Portfolio Projects\\POS\\Betten_Courts POS\\betten_courts\\storage\\app/public',
         'url' => 'http://localhost:8000//storage',
         'visibility' => 'public',
       ),
@@ -619,13 +619,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'D:\\ABDULLAH WORK (ME)\\Laravel Portfolio Projects\\POS\\Betten_Courts POS Changes (On Working)\\betten_courts\\storage\\logs/laravel.log',
+        'path' => 'D:\\ABDULLAH WORK\\Laravel Portfolio Projects\\POS\\Betten_Courts POS\\betten_courts\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'D:\\ABDULLAH WORK (ME)\\Laravel Portfolio Projects\\POS\\Betten_Courts POS Changes (On Working)\\betten_courts\\storage\\logs/laravel.log',
+        'path' => 'D:\\ABDULLAH WORK\\Laravel Portfolio Projects\\POS\\Betten_Courts POS\\betten_courts\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -675,7 +675,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'D:\\ABDULLAH WORK (ME)\\Laravel Portfolio Projects\\POS\\Betten_Courts POS Changes (On Working)\\betten_courts\\storage\\logs/laravel.log',
+        'path' => 'D:\\ABDULLAH WORK\\Laravel Portfolio Projects\\POS\\Betten_Courts POS\\betten_courts\\storage\\logs/laravel.log',
       ),
     ),
   ),
@@ -698,7 +698,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'D:\\ABDULLAH WORK (ME)\\Laravel Portfolio Projects\\POS\\Betten_Courts POS Changes (On Working)\\betten_courts\\resources\\views/vendor/mail',
+        0 => 'D:\\ABDULLAH WORK\\Laravel Portfolio Projects\\POS\\Betten_Courts POS\\betten_courts\\resources\\views/vendor/mail',
       ),
     ),
     'log_channel' => NULL,
@@ -709,7 +709,7 @@
     'stubs' => 
     array (
       'enabled' => false,
-      'path' => 'D:\\ABDULLAH WORK (ME)\\Laravel Portfolio Projects\\POS\\Betten_Courts POS Changes (On Working)\\betten_courts\\vendor/nwidart/laravel-modules/src/Commands/stubs',
+      'path' => 'D:\\ABDULLAH WORK\\Laravel Portfolio Projects\\POS\\Betten_Courts POS\\betten_courts\\vendor/nwidart/laravel-modules/src/Commands/stubs',
       'files' => 
       array (
         'routes/web' => 'Routes/web.php',
@@ -773,9 +773,9 @@
     ),
     'paths' => 
     array (
-      'modules' => 'D:\\ABDULLAH WORK (ME)\\Laravel Portfolio Projects\\POS\\Betten_Courts POS Changes (On Working)\\betten_courts\\Modules',
-      'assets' => 'D:\\ABDULLAH WORK (ME)\\Laravel Portfolio Projects\\POS\\Betten_Courts POS Changes (On Working)\\betten_courts\\public\\modules',
-      'migration' => 'D:\\ABDULLAH WORK (ME)\\Laravel Portfolio Projects\\POS\\Betten_Courts POS Changes (On Working)\\betten_courts\\database/migrations',
+      'modules' => 'D:\\ABDULLAH WORK\\Laravel Portfolio Projects\\POS\\Betten_Courts POS\\betten_courts\\Modules',
+      'assets' => 'D:\\ABDULLAH WORK\\Laravel Portfolio Projects\\POS\\Betten_Courts POS\\betten_courts\\public\\modules',
+      'migration' => 'D:\\ABDULLAH WORK\\Laravel Portfolio Projects\\POS\\Betten_Courts POS\\betten_courts\\database/migrations',
       'generator' => 
       array (
         'config' => 
@@ -968,7 +968,7 @@
       'enabled' => false,
       'paths' => 
       array (
-        0 => 'D:\\ABDULLAH WORK (ME)\\Laravel Portfolio Projects\\POS\\Betten_Courts POS Changes (On Working)\\betten_courts\\vendor/*/*',
+        0 => 'D:\\ABDULLAH WORK\\Laravel Portfolio Projects\\POS\\Betten_Courts POS\\betten_courts\\vendor/*/*',
       ),
     ),
     'composer' => 
@@ -997,7 +997,7 @@
       'file' => 
       array (
         'class' => 'Nwidart\\Modules\\Activators\\FileActivator',
-        'statuses-file' => 'D:\\ABDULLAH WORK (ME)\\Laravel Portfolio Projects\\POS\\Betten_Courts POS Changes (On Working)\\betten_courts\\modules_statuses.json',
+        'statuses-file' => 'D:\\ABDULLAH WORK\\Laravel Portfolio Projects\\POS\\Betten_Courts POS\\betten_courts\\modules_statuses.json',
         'cache-key' => 'activator.installed',
         'cache-lifetime' => 604800,
       ),
@@ -1167,7 +1167,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'D:\\ABDULLAH WORK (ME)\\Laravel Portfolio Projects\\POS\\Betten_Courts POS Changes (On Working)\\betten_courts\\storage\\framework/sessions',
+    'files' => 'D:\\ABDULLAH WORK\\Laravel Portfolio Projects\\POS\\Betten_Courts POS\\betten_courts\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -1200,8 +1200,8 @@
     ),
     'scan_paths' => 
     array (
-      0 => 'D:\\ABDULLAH WORK (ME)\\Laravel Portfolio Projects\\POS\\Betten_Courts POS Changes (On Working)\\betten_courts\\app',
-      1 => 'D:\\ABDULLAH WORK (ME)\\Laravel Portfolio Projects\\POS\\Betten_Courts POS Changes (On Working)\\betten_courts\\resources',
+      0 => 'D:\\ABDULLAH WORK\\Laravel Portfolio Projects\\POS\\Betten_Courts POS\\betten_courts\\app',
+      1 => 'D:\\ABDULLAH WORK\\Laravel Portfolio Projects\\POS\\Betten_Courts POS\\betten_courts\\resources',
     ),
     'ui_url' => 'languages',
     'database' => 
@@ -1215,9 +1215,9 @@
   array (
     'paths' => 
     array (
-      0 => 'D:\\ABDULLAH WORK (ME)\\Laravel Portfolio Projects\\POS\\Betten_Courts POS Changes (On Working)\\betten_courts\\resources\\views',
+      0 => 'D:\\ABDULLAH WORK\\Laravel Portfolio Projects\\POS\\Betten_Courts POS\\betten_courts\\resources\\views',
     ),
-    'compiled' => 'D:\\ABDULLAH WORK (ME)\\Laravel Portfolio Projects\\POS\\Betten_Courts POS Changes (On Working)\\betten_courts\\storage\\framework\\views',
+    'compiled' => 'D:\\ABDULLAH WORK\\Laravel Portfolio Projects\\POS\\Betten_Courts POS\\betten_courts\\storage\\framework\\views',
   ),
   'image' => 
   array (
@@ -1336,7 +1336,7 @@
     ),
     'temporary_files' => 
     array (
-      'local_path' => 'D:\\ABDULLAH WORK (ME)\\Laravel Portfolio Projects\\POS\\Betten_Courts POS Changes (On Working)\\betten_courts\\storage\\framework/cache/laravel-excel',
+      'local_path' => 'D:\\ABDULLAH WORK\\Laravel Portfolio Projects\\POS\\Betten_Courts POS\\betten_courts\\storage\\framework/cache/laravel-excel',
       'local_permissions' => 
       array (
       ),
@@ -1434,7 +1434,7 @@
     array (
     ),
     'enable_runnable_solutions' => NULL,
-    'remote_sites_path' => 'D:\\ABDULLAH WORK (ME)\\Laravel Portfolio Projects\\POS\\Betten_Courts POS Changes (On Working)\\betten_courts',
+    'remote_sites_path' => 'D:\\ABDULLAH WORK\\Laravel Portfolio Projects\\POS\\Betten_Courts POS\\betten_courts',
     'local_sites_path' => '',
     'housekeeping_endpoint_prefix' => '_ignition',
     'settings_file_path' => '',

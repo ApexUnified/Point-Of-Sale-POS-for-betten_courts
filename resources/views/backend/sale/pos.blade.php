@@ -1171,6 +1171,9 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <input type="text" hidden id="product_name">
+
                                         <div class="col-md-4 form-group">
                                             <label>{{ trans('file.Unit Price') }}</label>
                                             <input type="text" name="edit_unit_price" class="form-control numkey"
@@ -1651,8 +1654,8 @@
 
 @push('scripts')
     <script type="text/javascript">
-        window.open('/sale-customer-display-screen', 'Sale Customer Display', 'width=600,height=400');
-
+        // window.open('/sale-customer-display-screen', 'Sale Customer Display', 'width=600,height=400');
+        let product_name_for_cd_dsiplay = null;
         $("ul#sale").siblings('a').attr('aria-expanded', 'true');
         $("ul#sale").addClass("show");
         $("ul#sale #sale-pos-menu").addClass("active");
@@ -1662,6 +1665,51 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+
+         function updateCDDisplayedProducts(){
+            let cdProduct_code = localStorage.getItem("localStorageProductCode");
+            let cdProduct_UnitPrice = localStorage.getItem("localStorageNetUnitPrice");
+            let cdProduct_discount = localStorage.getItem("localStorageProductDiscount");
+            let cdProduct_Qty = localStorage.getItem("localStorageQty");
+            let cdProduct_Subtotal = localStorage.getItem("localStorageSubTotal");
+            let cdTaxName = localStorage.getItem("localStorageTaxName");
+            let cdTaxRate = localStorage.getItem("localStorageTaxRate");
+            let cdOrderTax = localStorage.getItem("order-tax-rate-select");
+            let cdOrderDiscount = localStorage.getItem("order-discount-type");
+            let cdOrderDiscoutValue = localStorage.getItem("order-discount-val");
+            let cdCopounGrandTotal = localStorage.getItem("after_copoun_grand_total") || 0;
+            let cdCopounType = localStorage.getItem("copoun_type") || null;
+            let cdCopounAmont = localStorage.getItem("copoun_amount") || 0;
+
+
+            $.ajax({
+                url: "/sale/customer-display-product-update",
+                method: "POST",
+                data: {
+                    product_code: cdProduct_code,
+                    product_unit_price: cdProduct_UnitPrice,
+                    product_discount: cdProduct_discount,
+                    product_qty: cdProduct_Qty,
+                    product_subtotal: cdProduct_Subtotal,
+                    product_name: product_name_for_cd_dsiplay,
+                    tax_name: cdTaxName,
+                    tax_rate: cdTaxRate,
+                    order_tax_rate: cdOrderTax,
+                    order_discount_type: cdOrderDiscount,
+                    order_discount_value: cdOrderDiscoutValue,
+                    copoun_grand_total: cdCopounGrandTotal,
+                    copoun_type: cdCopounType,
+                    copoun_amount: cdCopounAmont,
+                },
+                success: function(response) {},
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                },
+            });
+        }
+
+        // updateCDDisplayedProducts();
 
         @if (config('database.connections.saleprosaas_landlord'))
             numberOfInvoice = <?php echo json_encode($numberOfInvoice); ?>;
@@ -2453,7 +2501,9 @@
                 alert('Please select Warehouse!');
             else {
                 var data = $(this).data('product');
+
                 product_info = data.split(" (");
+                product_name_for_cd_dsiplay = product_info[1]; 
                 pos = product_code.indexOf(product_info[0]);
                 if (pos < 0)
                     alert('Product is not avaialable in the selected warehouse');
@@ -2526,9 +2576,11 @@
             if (is_imei[rowindex]) {
                 var imeiNumbers = $("#editModal input[name=imei_numbers]").val();
                 $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ')').find('.imei-number').val(
-                    imeiNumbers);
+                    imeiNumbers);     
             }
 
+           
+            
             var edit_discount = $('input[name="edit_discount"]').val();
             var edit_qty = $('input[name="edit_qty"]').val();
             var edit_unit_price = $('input[name="edit_unit_price"]').val();
@@ -2589,10 +2641,13 @@
                 product_price[rowindex] = $('input[name="edit_unit_price"]').val();
             }
             checkDiscount(edit_qty, false);
+
+             updateCDDisplayedProducts();
         });
 
         $('button[name="order_discount_btn"]').on("click", function() {
             calculateGrandTotal();
+            updateCDDisplayedProducts();
         });
 
         $('button[name="shipping_cost_btn"]').on("click", function() {
@@ -2601,6 +2656,7 @@
 
         $('button[name="order_tax_btn"]').on("click", function() {
             calculateGrandTotal();
+             updateCDDisplayedProducts();
         });
 
         $(".coupon-check").on("click", function() {
@@ -2828,13 +2884,14 @@
                         flag = 0;
                         checkQuantity(String(qty), true);
                         flag = 0;
-
                         localStorage.setItem("tbody-id", $("table.order-list tbody").html());
+                        
                     }
                     $("input[name='product_code_name']").val('');
                     if (flag) {
                         addNewProduct(data);
                     }
+                    updateCDDisplayedProducts();
                 }
             });
         }
@@ -3049,6 +3106,13 @@
                                 if (!$('input[name="coupon_active"]').val())
                                     alert('Congratulation! You got ' + (value['amount'] * currency[
                                         'exchange_rate']) + ' ' + currency['code'] + ' discount');
+
+                                localStorage.setItem("after_copoun_grand_total",$("#grand-total").text());
+                                localStorage.setItem("copoun_type",value['type']);
+                                localStorage.setItem("copoun_amount",value['amount']);
+
+                                updateCDDisplayedProducts();
+
                                 $(".coupon-check").prop("disabled", true);
                                 $("#coupon-code").prop("disabled", true);
                                 $('input[name="coupon_active"]').val(1);
@@ -3064,6 +3128,11 @@
                             var grand_total = $('input[name="grand_total"]').val();
                             var coupon_discount = grand_total * (value['amount'] / 100);
                             grand_total = grand_total - coupon_discount;
+                            localStorage.setItem("after_copoun_grand_total",grand_total);
+                            localStorage.setItem("copoun_type",value['type']);
+                            localStorage.setItem("copoun_amount",value['amount']);
+                            updateCDDisplayedProducts();
+                            
                             $('input[name="grand_total"]').val(grand_total);
                             $('#grand-total').text(parseFloat(grand_total).toFixed(
                                 {{ $general_setting->decimal }}));
@@ -3080,6 +3149,7 @@
                         }
                     }
                 });
+
                 if (!valid)
                     alert('Invalid coupon code!');
             }
@@ -3089,6 +3159,12 @@
             var customer_id = $('#customer_id').val();
             var warehouse_id = $('#warehouse_id').val();
             var product_id = $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ') .product-id').val();
+
+            console.log("In Check Discount Method");
+            console.log("Product ID: " + product_id);
+            console.log("Customer ID: " + customer_id);
+            console.log("Warehouse ID: " + warehouse_id);
+
             if (flag) {
                 $.ajax({
                     type: 'GET',
@@ -3271,62 +3347,74 @@
             calculateGrandTotal();
         }
 
-        function calculateGrandTotal() {
-            var item = $('table.order-list tbody tr:last').index();
-            var total_qty = parseFloat($('input[name="total_qty"]').val());
-            var subtotal = parseFloat($('input[name="total_price"]').val());
-            var order_tax = parseFloat($('select[name="order_tax_rate_select"]').val());
-            var order_discount_type = $('select[name="order_discount_type_select"]').val();
-            var order_discount_value = parseFloat($('input[name="order_discount_value"]').val());
+            function calculateGrandTotal() {
+                var itemIndex = $('table.order-list tbody tr:last').index();
+                var total_qty = parseFloat($('input[name="total_qty"]').val()) || 0;
+                var subtotal = parseFloat($('input[name="total_price"]').val()) || 0;
+                var order_tax_rate = parseFloat($('select[name="order_tax_rate_select"]').val()) || 0;
+                var order_discount_type = $('select[name="order_discount_type_select"]').val();
+                var order_discount_value = parseFloat($('input[name="order_discount_value"]').val()) || 0;
+                var exchange_rate = currencyChange ? currency['exchange_rate'] : 1;
 
-            if (!order_discount_value)
-                order_discount_value = {{ number_format(0, $general_setting->decimal, '.', '') }};
+                // Ensure discount value is not NaN
+                if (!order_discount_value) {
+                    order_discount_value = {{ number_format(0, $general_setting->decimal, '.', '') }};
+                }
 
-            if (order_discount_type == 'Flat') {
-                if (!currencyChange) {
-                    var order_discount = parseFloat(order_discount_value);
-                } else
-                    var order_discount = parseFloat(order_discount_value * currency['exchange_rate']);
-            } else
-                var order_discount = parseFloat(subtotal * (order_discount_value / 100));
+                // Calculate Order Discount
+                var order_discount = 0;
+                if (order_discount_type === 'Flat') {
+                    order_discount = parseFloat(order_discount_value) * exchange_rate;
+                } else {
+                    order_discount = parseFloat(subtotal * (order_discount_value / 100));
+                }
 
-            localStorage.setItem("order-tax-rate-select", order_tax);
-            localStorage.setItem("order-discount-type", order_discount_type);
-            $("#discount").text(order_discount.toFixed({{ $general_setting->decimal }}));
-            $('input[name="order_discount"]').val(order_discount);
-            $('input[name="order_discount_type"]').val(order_discount_type);
-            if (!currencyChange)
-                var shipping_cost = parseFloat($('input[name="shipping_cost"]').val());
-            else
-                var shipping_cost = parseFloat($('input[name="shipping_cost"]').val() * currency['exchange_rate']);
-            if (!shipping_cost)
-                shipping_cost = {{ number_format(0, $general_setting->decimal, '.', '') }};
+                // Ensure valid shipping cost
+                var shipping_cost = parseFloat($('input[name="shipping_cost"]').val()) || 0;
+                shipping_cost *= exchange_rate;
 
-            item = ++item + '(' + total_qty + ')';
-            order_tax = (subtotal - order_discount) * (order_tax / 100);
-            var grand_total = (subtotal + order_tax + shipping_cost) - order_discount;
-            $('input[name="grand_total"]').val(grand_total.toFixed({{ $general_setting->decimal }}));
+                // Store values locally
+                localStorage.setItem("order-tax-rate-select", order_tax_rate);
+                localStorage.setItem("order-discount-type", order_discount_type);
 
-            couponDiscount();
-            if (!currencyChange)
-                var coupon_discount = parseFloat($('input[name="coupon_discount"]').val());
-            else
-                var coupon_discount = parseFloat($('input[name="coupon_discount"]').val() * currency['exchange_rate']);
-            if (!coupon_discount)
-                coupon_discount = {{ number_format(0, $general_setting->decimal, '.', '') }};
-            grand_total -= coupon_discount;
+                // Update Discount UI
+                $("#discount").text(order_discount.toFixed(2));
+                $('input[name="order_discount"]').val(order_discount);
+                $('input[name="order_discount_type"]').val(order_discount_type);
 
-            $('#item').text(item);
-            $('input[name="item"]').val($('table.order-list tbody tr:last').index() + 1);
-            $('#subtotal').text(subtotal.toFixed({{ $general_setting->decimal }}));
-            $('#tax').text(order_tax.toFixed({{ $general_setting->decimal }}));
-            $('input[name="order_tax"]').val(order_tax.toFixed({{ $general_setting->decimal }}));
-            $('#shipping-cost').text(shipping_cost.toFixed({{ $general_setting->decimal }}));
-            $('input[name="shipping_cost"]').val(shipping_cost);
-            $('#grand-total').text(grand_total.toFixed({{ $general_setting->decimal }}));
-            $('input[name="grand_total"]').val(grand_total.toFixed({{ $general_setting->decimal }}));
-            currencyChange = false;
-        }
+                // Calculate Order Tax AFTER discount
+                var taxable_amount = subtotal - order_discount;
+                var order_tax = taxable_amount * (order_tax_rate / 100);
+                console.log("POS Order TAX: " + order_tax.toFixed(2));
+
+                // Calculate Grand Total
+                var grand_total = (taxable_amount + order_tax + shipping_cost);
+
+                // Apply Coupon Discount
+                couponDiscount();
+                var coupon_discount = parseFloat($('input[name="coupon_discount"]').val()) || 0;
+                coupon_discount *= exchange_rate;
+                grand_total -= coupon_discount;
+
+                // Update UI
+                itemIndex = ++itemIndex + '(' + total_qty + ')';
+                $('#item').text(itemIndex);
+                $('input[name="item"]').val($('table.order-list tbody tr:last').index() + 1);
+
+                $('#subtotal').text(subtotal.toFixed(2));
+                $('#tax').text(order_tax.toFixed(2));
+                $('input[name="order_tax"]').val(order_tax.toFixed(2));
+
+                $('#shipping-cost').text(shipping_cost.toFixed(2));
+                $('input[name="shipping_cost"]').val(shipping_cost.toFixed(2));
+
+                $('#grand-total').text(grand_total.toFixed(2));
+                $('input[name="grand_total"]').val(grand_total.toFixed(2));
+
+                // Reset currency change flag
+                currencyChange = false;
+            }
+
 
         function hide() {
             $(".card-element").hide();
