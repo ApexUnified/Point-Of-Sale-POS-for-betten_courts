@@ -309,6 +309,10 @@ Route::group(['middleware' => ['common', 'auth', 'active']], function () {
         Route::post('sales/sendsms', 'sendSMS')->name('sale.sendsms');
         Route::get("/sale-customer-display-screen", "SaleCustomerDisplay")->name("sale.customer.display");
         Route::post("/sale/customer-display-product-update", "SaleCustomerDisplayProductUpdate");
+        Route::post("/sale-customer-display-delete-product", "SaleCustomerDisplayDeleteProduct");
+        Route::get("/sale-customer-clear-display", "SaleCustomerDisplayClear")->name("sale.customer.display.clear");
+        Route::post("/add-product-cd", "addProductCD");
+        Route::post("/subtract-product-cd", "SubtractProductCD");
     });
     Route::resource('sales', SaleController::class);
 

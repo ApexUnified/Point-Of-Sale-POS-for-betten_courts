@@ -171,7 +171,7 @@ window.Echo.private(`SaleCustomerDisplayProductUpdate.${current_user_id}`)
                 DiscountedAmount = (Total * e.product["copoun_amount"]) / 100;
             }
 
-            Total -= DiscountedAmount;
+            Total -= Math.ceil(DiscountedAmount);
 
             $(".summary .total-row .coupon-discount").closest(".total-row").remove();
             $(".summary").prepend(`
@@ -255,6 +255,104 @@ window.Echo.private(`ClearCustomerDisplay.${current_user_id}`)
         sessionStorage.clear();
         $(".items-container").html("");
         $(".total-row").not(".grand-total").remove();
-        $(".total-row.grand-total span:last-child").text("00,00");
+        $(".total-row.grand-total span:last-child").text("0.00");
 
-    })
+    });
+
+
+
+window.Echo.private(`ProductDeleteFromCD.${current_user_id}`)
+    .listen(".ProductDeleteFromCD", (e) => {
+        console.log("Deleting Product:", e);
+        let priceElement = $(".total-row.grand-total span:last-child").text();
+        let Total = parseFloat(priceElement.replace(currency, "").trim())
+
+        let productCodes = e.product["product_code"];
+        console.log(productCodes);
+
+        const items = document.querySelectorAll(".items-container .item");
+
+        items.forEach(item => {
+            const productId = item.getAttribute("data-product-id");
+
+            if (!productCodes.includes(productId)) {
+                let productAmount = item.querySelector(".item-subtotal").textContent;
+                productAmount = parseFloat(productAmount.replace(currency, "").trim());
+                Total -= productAmount;
+                item.remove();
+                $(".total-row.grand-total span:last-child").text(currency + " " + Total);
+            }
+        });
+
+        const remainingItems = document.querySelectorAll(".items-container .item");
+
+        if (remainingItems.length === 0) {
+            $(".total-row").not(".grand-total").remove();
+            $(".total-row.grand-total span:last-child").text("0.00");
+        }
+
+    });
+window.Echo.private(`AddProductCD.${current_user_id}`)
+    .listen("AddProductCD", (e) => {
+        console.log("Adding Product " + e.product_code);
+
+        const items = document.querySelectorAll(".items-container .item");
+
+        items.forEach(item => {
+            const productid = item.getAttribute("data-product-id");
+
+            if (e.product_code.includes(productid)) {
+                // Get current quantity and price
+                let qtyElement = item.querySelector(".item-quantity");
+                let priceElement = item.querySelector(".item-price");
+                let subtotalElement = item.querySelector(".item-subtotal");
+
+                let qty = parseInt(qtyElement.textContent);
+                let price = parseFloat(priceElement.textContent.replace(currency, "").trim());
+
+                qty += 1;
+
+                let newSubtotal = qty * price;
+
+                qtyElement.textContent = qty;
+                subtotalElement.textContent = `${currency} ${newSubtotal}`;
+
+                console.log(`Updated Product ${productid}: Qty = ${qty}, Subtotal = ${currency} ${newSubtotal}`);
+            }
+        });
+
+
+    });
+
+
+window.Echo.private(`SubtractProductCD.${current_user_id}`)
+    .listen("SubtractProductCD", (e) => {
+        console.log("Subtracting Product " + e.product_code);
+
+        const items = document.querySelectorAll(".items-container .item");
+
+        items.forEach(item => {
+            const productid = item.getAttribute("data-product-id");
+
+            if (e.product_code.includes(productid)) {
+                // Get current quantity and price
+                let qtyElement = item.querySelector(".item-quantity");
+                let priceElement = item.querySelector(".item-price");
+                let subtotalElement = item.querySelector(".item-subtotal");
+
+                let qty = parseInt(qtyElement.textContent);
+                let price = parseFloat(priceElement.textContent.replace(currency, "").trim());
+
+                qty -= 1;
+
+                let newSubtotal = qty * price;
+
+                qtyElement.textContent = qty;
+                subtotalElement.textContent = `${currency} ${newSubtotal}`;
+
+                console.log(`Updated Product ${productid}: Qty = ${qty}, Subtotal = ${currency} ${newSubtotal}`);
+            }
+        });
+
+
+    });

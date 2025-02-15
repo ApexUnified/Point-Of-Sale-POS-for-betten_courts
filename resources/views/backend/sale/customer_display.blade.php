@@ -134,7 +134,7 @@
         <div class="summary">
             <div class="total-row grand-total">
                 <span>Total</span>
-                <span>00,00</span>
+                <span>0.00</span>
             </div>
         </div>
     </div>

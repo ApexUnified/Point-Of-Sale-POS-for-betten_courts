@@ -2,78 +2,81 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AddProductCD;
 use App\Events\ClearCustomerDisplay;
+use App\Events\DeleteProductFromCD;
 use App\Events\SaleCustomerDisplayProductUpdate;
-use DB;
-use Mail;
-use Cache;
-use Stripe\Stripe;
-use App\Models\Tax;
-use App\Models\Sale;
-use App\Models\Unit;
-use App\Models\User;
-use App\Models\Brand;
-use App\Models\Table;
-use App\Models\Biller;
-use App\Models\Coupon;
-use App\Models\Account;
-use App\Models\Courier;
-use App\Models\Expense;
-use App\Models\Payment;
-use App\Models\Product;
-use App\Models\Returns;
-use App\Models\Variant;
+use App\Events\SaleProductUpdateCD;
+use App\Events\SubtractProductCD;
 use App\Mail\LogMessage;
+use App\Mail\PaymentDetails;
+use App\Mail\SaleDetails;
+use App\Models\Account;
+use App\Models\Biller;
+use App\Models\Brand;
+use App\Models\CashRegister;
 use App\Models\Category;
+use App\Models\Coupon;
+use App\Models\Courier;
 use App\Models\Currency;
 use App\Models\Customer;
-use App\Models\Delivery;
-use App\Models\GiftCard;
-use App\Models\Purchase;
-use App\Mail\SaleDetails;
-use App\Models\Warehouse;
-use App\Models\PosSetting;
+use App\Models\CustomerGroup;
 use App\Models\CustomField;
+use App\Models\Delivery;
+use App\Models\Expense;
+use App\Models\ExternalService;
+use App\Models\GeneralSetting;
+use App\Models\GiftCard;
 use App\Models\MailSetting;
-use App\Models\SmsTemplate;
-use App\Mail\PaymentDetails;
-use App\Models\CashRegister;
+use App\Models\Payment;
+use App\Models\PaymentWithCheque;
+use App\Models\PaymentWithCreditCard;
+use App\Models\PaymentWithGiftCard;
+use App\Models\PaymentWithPaypal;
+use App\Models\PosSetting;
+use App\Models\Product;
 use App\Models\Product_Sale;
+use App\Models\Product_Warehouse;
 use App\Models\ProductBatch;
+use App\Models\ProductPurchase;
+use App\Models\ProductReturn;
+use App\Models\ProductVariant;
+use App\Models\Purchase;
+use App\Models\Returns;
+use App\Models\RewardPointSetting;
+use App\Models\Sale;
+use App\Models\SmsTemplate;
+use App\Models\Table;
+use App\Models\Tax;
+use App\Models\Unit;
+use App\Models\User;
+use App\Models\Variant;
+use App\Models\Warehouse;
 use App\Services\SmsService;
+use App\SMSProviders\TonkraSms;
+use App\ViewModels\ISmsModel;
+use Cache;
+use DB;
 use GeniusTS\HijriDate\Date;
 use Illuminate\Http\Request;
-use Salla\ZATCA\Tags\Seller;
-use App\Models\CustomerGroup;
-use App\Models\ProductReturn;
-use App\ViewModels\ISmsModel;
-use App\Models\GeneralSetting;
-use App\Models\ProductVariant;
-use App\Models\ExternalService;
-use App\Models\ProductPurchase;
-use App\SMSProviders\TonkraSms;
-use Salla\ZATCA\GenerateQrCode;
-use Salla\ZATCA\Tags\TaxNumber;
-use NumberToWords\NumberToWords;
-use App\Models\PaymentWithCheque;
-use App\Models\PaymentWithPaypal;
-use App\Models\Product_Warehouse;
-use Salla\ZATCA\Tags\InvoiceDate;
-use App\Models\RewardPointSetting;
-use Spatie\Permission\Models\Role;
-use App\Events\SaleProductUpdateCD;
-use App\Models\PaymentWithGiftCard;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use App\Models\PaymentWithCreditCard;
-use Salla\ZATCA\Tags\InvoiceTaxAmount;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
-use Salla\ZATCA\Tags\InvoiceTotalAmount;
-use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Validator;
-use Srmklive\PayPal\Services\ExpressCheckout;
-use Srmklive\PayPal\Services\AdaptivePayments;
+use Mail;
+use NumberToWords\NumberToWords;
 use PHPUnit\Framework\MockObject\Stub\ReturnSelf;
+use Salla\ZATCA\GenerateQrCode;
+use Salla\ZATCA\Tags\InvoiceDate;
+use Salla\ZATCA\Tags\InvoiceTaxAmount;
+use Salla\ZATCA\Tags\InvoiceTotalAmount;
+use Salla\ZATCA\Tags\Seller;
+use Salla\ZATCA\Tags\TaxNumber;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Srmklive\PayPal\Services\AdaptivePayments;
+use Srmklive\PayPal\Services\ExpressCheckout;
+use Stripe\Stripe;
 
 class SaleController extends Controller
 {
@@ -3438,5 +3441,49 @@ class SaleController extends Controller
         Log::info($product);
         broadcast(new SaleCustomerDisplayProductUpdate($product, Auth::id()));
         return response()->json(["status" => true]);
+    }
+
+
+    public function SaleCustomerDisplayClear()
+    {
+        broadcast(new ClearCustomerDisplay(Auth::id()));
+        return response()->json(["status" => true]);
+    }
+
+
+    public function SaleCustomerDisplayDeleteProduct(Request $request)
+    {
+
+        $product_unit_price = explode(",", $request->input("product_unit_price"));
+        $product_discount = explode(",", $request->input("product_discount"));
+        $product_subtotal = explode(",", $request->input("product_subtotal"));
+        $product_code = explode(",", $request->input("product_code"));
+        $product_qty = explode(",", $request->input("product_qty"));
+
+        $product = [
+            "product_code" => $product_code,
+            "product_qty"  => $product_qty,
+            "product_discount" => $product_discount,
+            "product_unit_price" => $product_unit_price,
+            "product_subtotal" => $product_subtotal,
+        ];
+
+        Log::info($product);
+
+
+        broadcast(new DeleteProductFromCD($product, Auth::id()));
+        return response()->json(["status" => true]);
+    }
+
+
+    public function addProductCD(Request $request)
+    {
+        broadcast(new AddProductCD($request->input("product_code"), Auth::id()));
+        return true;
+    }
+    public function SubtractProductCD(Request $request)
+    {
+        broadcast(new SubtractProductCD($request->input("product_code"), Auth::id()));
+        return true;
     }
 }

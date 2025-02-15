@@ -11,12 +11,15 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ClearCustomerDisplay implements ShouldBroadcastNow
+class DeleteProductFromCD implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    public $product = [];
     public $user_id;
-    public function __construct($user_id)
+    public function __construct($product, $user_id)
     {
+        $this->product = $product;
         $this->user_id = $user_id;
     }
 
@@ -27,16 +30,21 @@ class ClearCustomerDisplay implements ShouldBroadcastNow
      */
     public function broadcastOn(): array
     {
-        \Log::info("Clearing Display");
         return [
-            new PrivateChannel("ClearCustomerDisplay.{$this->user_id}"),
+            new PrivateChannel("ProductDeleteFromCD.{$this->user_id}"),
         ];
     }
 
     public function broadcastWith(): array
     {
         return [
-            "message" => "Clearing Screen Please Wait...",
+            'product' => $this->product,
+            'user_id' => $this->user_id
         ];
+    }
+
+    public function broadcastAs()
+    {
+        return 'ProductDeleteFromCD';
     }
 }

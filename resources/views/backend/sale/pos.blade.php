@@ -535,6 +535,14 @@
                                     data-toggle="modal" data-target="#recentTransaction"><i class="dripicons-clock"></i>
                                     {{ trans('file.Recent Transaction') }}</button>
                             </div>
+
+                            <div class="column-5">
+                                <button style="background-color: #071cff;" onclick="document.getElementById('sale-customer-display-route').click();" type="button" class="btn btn-sm btn-custom"
+                                    ><i class="dripicons-monitor"></i>
+                                    Customer Display</button>
+
+                                    <a href="{{ route("sale.customer.display") }}" id="sale-customer-display-route" class="d-none"></a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1709,24 +1717,66 @@
             });
         }
 
-        // updateCDDisplayedProducts();
 
-        @if (config('database.connections.saleprosaas_landlord'))
-            numberOfInvoice = <?php echo json_encode($numberOfInvoice); ?>;
+        function clearCD(){
             $.ajax({
-                type: 'GET',
-                async: false,
-                url: '{{ route('package.fetchData', $general_setting->package_id) }}',
-                success: function(data) {
-                    if (data['number_of_invoice'] > 0 && data['number_of_invoice'] <= numberOfInvoice) {
-                        localStorage.setItem("message",
-                            "You don't have permission to create another invoice as you already exceed the limit! Subscribe to another package if you wants more!"
-                        );
-                        location.href = "{{ route('sales.index') }}";
-                    }
+                url: "/sale-customer-clear-display",
+                method: "GET",
+                success: function(e){
+                    console.log(e)
+                },
+                error: function(e){
+                    console.log(e);
                 }
             });
-        @endif
+        }
+
+
+        function deleteProductFromCD(){
+            let cdProduct_code = localStorage.getItem("localStorageProductCode");
+            let cdProduct_UnitPrice = localStorage.getItem("localStorageNetUnitPrice");
+            let cdProduct_discount = localStorage.getItem("localStorageProductDiscount");
+            let cdProduct_Qty = localStorage.getItem("localStorageQty");
+            let cdProduct_Subtotal = localStorage.getItem("localStorageSubTotal");
+
+            $.ajax({
+                url: "/sale-customer-display-delete-product",
+                method: "POST",
+                data: {
+                    product_code: cdProduct_code,
+                    product_unit_price: cdProduct_UnitPrice,
+                    product_discount: cdProduct_discount,
+                    product_qty: cdProduct_Qty,
+                    product_subtotal: cdProduct_Subtotal,
+                },
+            });
+
+        }
+
+
+        function addProductCD(product_code){
+            $.ajax({
+                url: "/add-product-cd",
+                method: "POST",
+                data: {product_code: product_code},
+                success: function(){
+                    updateCDDisplayedProducts();
+                }
+            });
+        }
+
+        function subtractProductCD(product_code){
+            $.ajax({
+                url: "/subtract-product-cd",
+                method: "POST",
+                data: {product_code: product_code},
+                success: function(){
+                    updateCDDisplayedProducts();
+                }
+            });
+        }
+      
+
 
         @if (session()->get('message') == 'Sale successfully added to draft')
             localStorage.clear();
@@ -2415,8 +2465,14 @@
             }
         });
 
-        $("#myTable").on('click', '.plus', function() {
+        $("#myTable").on('click', '.plus', function(e) {
             rowindex = $(this).closest('tr').index();
+
+            var $row = $(this).closest("tr");
+            var product_code = $row.find(".product-code").val();
+
+            addProductCD(product_code);
+
             var qty = $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ') .qty').val();
             if (!qty)
                 qty = 1;
@@ -2430,6 +2486,13 @@
 
         $("#myTable").on('click', '.minus', function() {
             rowindex = $(this).closest('tr').index();
+
+            var $row = $(this).closest("tr");
+            var product_code = $row.find(".product-code").val();
+
+            subtractProductCD(product_code);
+
+            console.log("Subtracting Product");
             var qty = parseFloat($('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ') .qty').val()) - 1;
             if (qty > 0) {
                 $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ') .qty').val(qty);
@@ -2559,10 +2622,12 @@
             localStorage.setItem("localStorageTaxValue", localStorageTaxValue);
             localStorage.setItem("localStorageSubTotalUnit", localStorageSubTotalUnit);
             localStorage.setItem("localStorageSubTotal", localStorageSubTotal);
-
+            deleteProductFromCD();
             $(this).closest("tr").remove();
             localStorage.setItem("tbody-id", $("table.order-list tbody").html());
             calculateTotal();
+
+
         });
 
         //Edit product
@@ -3160,11 +3225,6 @@
             var warehouse_id = $('#warehouse_id').val();
             var product_id = $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ') .product-id').val();
 
-            console.log("In Check Discount Method");
-            console.log("Product ID: " + product_id);
-            console.log("Customer ID: " + customer_id);
-            console.log("Warehouse ID: " + warehouse_id);
-
             if (flag) {
                 $.ajax({
                     type: 'GET',
@@ -3181,6 +3241,7 @@
                 });
             }
             $('table.order-list tbody tr:nth-child(' + (rowindex + 1) + ') .qty').val(qty);
+        
             checkQuantity(String(qty), flag);
             localStorage.setItem("tbody-id", $("table.order-list tbody").html());
         }
@@ -3502,6 +3563,7 @@
                 $('table.order-list tbody tr:last').remove();
                 rownumber--;
             }
+            
             $('input[name="shipping_cost"]').val('');
             $('input[name="order_discount_value"]').val('');
             $('select[name="order_tax_rate_select"]').val(0);
@@ -3513,6 +3575,8 @@
             audio.play();
             if (confirm("Are you sure want to cancel?")) {
                 cancel($('table.order-list tbody tr:last').index());
+                clearCD();
+                localStorage.clear();
             }
             return false;
         }

@@ -22,3 +22,12 @@ Broadcast::channel("SaleCustomerDisplayProductUpdate.{user_id}", function ($user
 Broadcast::channel("ClearCustomerDisplay.{user_id}", function ($user, $user_id) {
     return (int) $user->id === (int) $user_id;
 });
+Broadcast::channel("ProductDeleteFromCD.{user_id}", function ($user, $user_id) {
+    return (int) $user->id === (int) $user_id;
+});
+Broadcast::channel("AddProductCD.{user_id}", function ($user, $user_id) {
+    return (int) $user->id === (int) $user_id;
+});
+Broadcast::channel("SubtractProductCD.{user_id}", function ($user, $user_id) {
+    return (int) $user->id === (int) $user_id;
+});
