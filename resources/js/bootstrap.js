@@ -62,8 +62,8 @@ const current_user_id = $("meta[name='current_user_id']").attr("content");
 const currency = $("meta[name='currency']").attr("content");
 window.Echo.private(`SaleProductUpdateCD.${current_user_id}`)
     .listen("SaleProductUpdateCD", (e) => {
-        console.log("Event Fired for " + current_user_id);
-        console.log(e.product);
+        // console.log("Event Fired for " + current_user_id);
+        // console.log(e.product);
 
 
         let productcode = String(e.product[1]); // Convert to string if necessary
@@ -72,7 +72,7 @@ window.Echo.private(`SaleProductUpdateCD.${current_user_id}`)
         if (existingItem.length === 0) {
             $(".items-container").append(`
                     <div class="item" data-product-id="${productcode}">
-                       <span class="item-name">${e.product[0]} </br> ${productcode} </span>
+                       <span class="item-name" data-original-name=${e.product[0]}>${e.product[0]} </br> ${productcode} </span>
                        <span class="item-quantity">${e.product[5]}</span>
                        <span class="item-price">${currency} ${e.product[2]}</span>
                        <span class="item-subtotal">${currency} ${e.product[2]}</span>
@@ -80,10 +80,10 @@ window.Echo.private(`SaleProductUpdateCD.${current_user_id}`)
                `);
         } else {
             let currentQuantity = parseInt(existingItem.find(".item-quantity").text()) || 0;
-            console.log(currentQuantity);
+            // console.log(currentQuantity);
 
             let newQuantity = currentQuantity + parseInt(e.product[5]);
-            console.log("Updated Quantity:", newQuantity);
+            // console.log("Updated Quantity:", newQuantity);
 
             existingItem.find(".item-quantity").text(newQuantity);
             existingItem.find(".item-price").text(`${currency} ${e.product[2]}`);
@@ -93,164 +93,131 @@ window.Echo.private(`SaleProductUpdateCD.${current_user_id}`)
 
         }
 
-        var total = 0;
-        $(".items-container .item-subtotal").each(function () {
-            var value = parseFloat($(this).text().replace(/[^0-9.]/g, ''));
-            if (!isNaN(value)) {
-                total += value;
-            }
-        });
-
-        $(".total-row.grand-total span:last-child").text(currency + " " + total);
     });
 
 
 window.Echo.private(`SaleCustomerDisplayProductUpdate.${current_user_id}`)
     .listen("SaleCustomerDisplayProductUpdate", (e) => {
-        console.log("Received Product Data:", e.product);
+        // console.log("Received Product Data:", e.product);
 
-        let productCode = e.product["product_code"];
-        let productName = e.product["product_name"];
-        let productQty = parseInt(e.product["product_qty"]);
-        let productUnitPrice = parseInt(e.product["product_unit_price"]);
-        let productSubtotal = parseInt(e.product["product_subtotal"]);
-        let product_discount = parseInt(e.product["product_discount"]);
-        let taxName = e.product["tax_name"];
-        let taxRate = parseInt(e.product["tax_rate"]);
+        let productCodes = e.product["product_code"];
+        let productQtys = e.product["product_qty"];
+        let productUnitPrices = e.product["product_unit_price"];
+        let productSubtotals = e.product["product_subtotal"];
+        let productDiscounts = e.product["product_discount"];
+        let taxNames = e.product["tax_name"];
+        let taxRates = e.product["tax_rate"];
+
         let orderTaxRate = parseInt(e.product["order_tax_rate"]);
-        let order_discount_type = e.product["order_discount_type"];
-        let order_discount_value = e.product["order_discount_value"] !== null && e.product["order_discount_value"] !== undefined
+        let orderDiscountType = e.product["order_discount_type"];
+        let orderDiscountValue = e.product["order_discount_value"] !== null && e.product["order_discount_value"] !== undefined
             ? parseInt(e.product["order_discount_value"])
             : 0;
 
-        let existingItem = $(".item[data-product-id='" + productCode + "']");
+        let copounType = e.product["copoun_type"];
+        let copounAmount = e.product["copoun_amount"];
+        let copounGrandTotal = e.product["copoun_grand_total"];
 
-        if (existingItem.length === 0) {
-            // If product does not exist, add it to the list
-            $(".items-container").append(`
-                <div class="item" data-product-id="${productCode}">
-                   <span class="item-name">${productName} </br> ${productCode} </span>
-                   <span class="item-quantity">${productQty}</span>
-                   <span class="item-price">${currency} ${productUnitPrice}</span>
-                   <span class="item-subtotal">${currency} ${productSubtotal}</span>
-               </div>
-           `);
-        } else {
-            existingItem.find(".item-name").html(`${productName} </br> ${productCode}`);
-            existingItem.find(".item-quantity").text(productQty);
-            existingItem.find(".item-price").text(`${currency} ${productUnitPrice}`);
-            existingItem.find(".item-subtotal").text(`${currency} ${productSubtotal}`);
+        for (let i = 0; i < productCodes.length; i++) {
+            let productCode = productCodes[i];
+            let productQty = parseInt(productQtys[i]) || 0;
+            let productUnitPrice = parseFloat(productUnitPrices[i]) || 0;
+            let productSubtotal = parseFloat(productSubtotals[i]) || 0;
+            let productDiscount = parseFloat(productDiscounts[i]) || 0;
+            let taxName = taxNames[i] || "No Tax";
+            let taxRate = parseFloat(taxRates[i]) || 0;
+
+            // Check if product name is available, otherwise keep the existing name
+            let productName = e.product["product_name"] && e.product["product_name"][i]
+                ? e.product["product_name"][i]
+                : $(".item[data-product-id='" + productCode + "'] .item-name").data("original-name") || "Unknown Product";
+
+            let existingItem = $(".item[data-product-id='" + productCode + "']");
+
+            if (existingItem.length === 0) {
+                $(".items-container").append(`
+                    <div class="item" data-product-id="${productCode}">
+                       <span class="item-name" data-original-name="${productName}">${productName} </br> ${productCode}</span>
+                       <span class="item-quantity">${productQty}</span>
+                       <span class="item-price">${currency} ${productUnitPrice}</span>
+                       <span class="item-subtotal">${currency} ${productSubtotal}</span>
+                    </div>
+                `);
+            } else {
+                existingItem.find(".item-quantity").text(productQty);
+                existingItem.find(".item-price").text(`${currency} ${productUnitPrice}`);
+                existingItem.find(".item-subtotal").text(`${currency} ${productSubtotal}`);
+            }
         }
 
-        // Recalculate Grand Total
-        let Total = 0;
-        $(".items-container .item-subtotal").each(function () {
-            let value = parseFloat($(this).text().replace(/[^0-9.]/g, ''));
-            if (!isNaN(value)) {
-                Total += value;
-            }
-        });
-
-
-
-        if (
-            e.product["copoun_type"] !== null && e.product["copoun_type"] !== undefined &&
-            e.product["copoun_grand_total"] !== null && e.product["copoun_grand_total"] !== undefined &&
-            e.product["copoun_grand_total"] >= 0
-        ) {
-
-
-            let DiscountedAmount = 0;
-
-            // 🔹 Fixed Coupon Logic
-            if (e.product["copoun_type"] === "fixed") {
-                DiscountedAmount = e.product["copoun_amount"];
-            }
-            // 🔹 Percentage Coupon Logic
-            else if (e.product["copoun_type"] === "percentage") {
-                DiscountedAmount = (Total * e.product["copoun_amount"]) / 100;
-            }
-
-            Total -= Math.ceil(DiscountedAmount);
-
-            $(".summary .total-row .coupon-discount").closest(".total-row").remove();
+        // Handle Coupon
+        $(".summary .total-row .coupon-discount").closest(".total-row").remove();
+        if (copounType !== null && copounType !== undefined && copounGrandTotal >= 0) {
             $(".summary").prepend(`
                 <div class="total-row">
                     <span class="coupon-discount">Coupon Discount</span>
-                    <span>(${e.product["copoun_type"]} ${e.product["copoun_amount"]})</span>
-                </div> 
-            `);
-
-
-            console.log("🟢 Coupon Applied: " + e.product["copoun_type"]);
-            console.log("🟡 Discounted Amount: " + DiscountedAmount);
-            console.log("🔴 Total After Coupon: " + Total);
-        }
-
-
-
-
-        if (taxName !== "No Tax" && $(".summary .total-row span[data-productName='" + productName + "']").length === 0) {
-            $(".summary").prepend(`
-                <div class="total-row">
-                    <span data-productName="${productName}">Product Tax (${productName})</span>
-                    <span>(%${taxRate})</span>
+                    <span>(${copounType} ${copounAmount})</span>
                 </div> 
             `);
         }
+
+        // Handle Taxes
+        $(".summary .total-row .order-tax, .summary .total-row .order-discount").closest(".total-row").remove();
+        for (let i = 0; i < productCodes.length; i++) {
+            let taxName = taxNames[i];
+            let taxRate = parseFloat(taxRates[i]) || 0;
+            let productName = $(".item[data-product-id='" + productCodes[i] + "'] .item-name").data("original-name");
+
+            if (taxName !== "No Tax" && $(".summary .total-row span[data-productName='" + productName + "']").length === 0) {
+                $(".summary").prepend(`
+                    <div class="total-row">
+                        <span data-productName="${productName}">Product Tax (${productName})</span>
+                        <span>(%${taxRate})</span>
+                    </div> 
+                `);
+            }
+        }
+
+
 
 
         $(".summary .total-row .order-tax, .summary .total-row .order-discount").closest(".total-row").remove();
 
-        let discountAmount = 0;
-        if (order_discount_value > 0) {
-            discountAmount = order_discount_type === "Flat"
-                ? order_discount_value
-                : (Total * order_discount_value) / 100;
-
-            let discountLabel = order_discount_type === "Flat"
-                ? `${currency} (${order_discount_value})`
-                : `(% ${order_discount_value})`;
+        if (orderDiscountValue > 0) {
+            let discountLabel = orderDiscountType === "Flat"
+                ? `${currency} (${orderDiscountValue})`
+                : `(% ${orderDiscountValue})`;
 
             $(".summary").prepend(`
-        <div class="total-row">
-            <span class="order-discount">Order Discount</span>
-            <span data-order-discount-type="${order_discount_type}">${discountLabel}</span>
-        </div> 
-    `);
+            <div class="total-row">
+                <span class="order-discount">Order Discount</span>
+                <span data-order-discount-type="${orderDiscountType}">${discountLabel}</span>
+            </div> 
+        `);
 
-            Total -= discountAmount;
         }
 
-        let taxAmount = (Total * orderTaxRate) / 100;
-        Total += taxAmount;
 
         if (orderTaxRate !== 0) {
             $(".summary").prepend(`
-        <div class="total-row">
-            <span class="order-tax">Order Tax </span>
-            <span>(%${orderTaxRate})</span>
-        </div> 
-    `);
+            <div class="total-row">
+                <span class="order-tax">Order Tax </span>
+                <span>(%${orderTaxRate})</span>
+            </div> 
+        `);
         }
 
 
 
-        Total = parseFloat(Total.toFixed(2));
-
-
-
-
-
-
-        $(".total-row.grand-total span:last-child").text(currency + " " + Total);
+        // Total = parseFloat(Total.toFixed(2));
+        // $(".total-row.grand-total span:last-child").text(currency + " " + Total);
     });
 
 
 
 window.Echo.private(`ClearCustomerDisplay.${current_user_id}`)
     .listen("ClearCustomerDisplay", (e) => {
-        console.log(e.message);
+        // console.log(e.message);
         localStorage.clear();
         sessionStorage.clear();
         $(".items-container").html("");
@@ -263,12 +230,12 @@ window.Echo.private(`ClearCustomerDisplay.${current_user_id}`)
 
 window.Echo.private(`ProductDeleteFromCD.${current_user_id}`)
     .listen(".ProductDeleteFromCD", (e) => {
-        console.log("Deleting Product:", e);
+        // console.log("Deleting Product:", e);
         let priceElement = $(".total-row.grand-total span:last-child").text();
         let Total = parseFloat(priceElement.replace(currency, "").trim())
 
         let productCodes = e.product["product_code"];
-        console.log(productCodes);
+        // console.log(productCodes);
 
         const items = document.querySelectorAll(".items-container .item");
 
@@ -294,7 +261,7 @@ window.Echo.private(`ProductDeleteFromCD.${current_user_id}`)
     });
 window.Echo.private(`AddProductCD.${current_user_id}`)
     .listen("AddProductCD", (e) => {
-        console.log("Adding Product " + e.product_code);
+        // console.log("Adding Product " + e.product_code);
 
         const items = document.querySelectorAll(".items-container .item");
 
@@ -317,7 +284,7 @@ window.Echo.private(`AddProductCD.${current_user_id}`)
                 qtyElement.textContent = qty;
                 subtotalElement.textContent = `${currency} ${newSubtotal}`;
 
-                console.log(`Updated Product ${productid}: Qty = ${qty}, Subtotal = ${currency} ${newSubtotal}`);
+                // console.log(`Updated Product ${productid}: Qty = ${qty}, Subtotal = ${currency} ${newSubtotal}`);
             }
         });
 
@@ -327,7 +294,7 @@ window.Echo.private(`AddProductCD.${current_user_id}`)
 
 window.Echo.private(`SubtractProductCD.${current_user_id}`)
     .listen("SubtractProductCD", (e) => {
-        console.log("Subtracting Product " + e.product_code);
+        // console.log("Subtracting Product " + e.product_code);
 
         const items = document.querySelectorAll(".items-container .item");
 
@@ -350,9 +317,18 @@ window.Echo.private(`SubtractProductCD.${current_user_id}`)
                 qtyElement.textContent = qty;
                 subtotalElement.textContent = `${currency} ${newSubtotal}`;
 
-                console.log(`Updated Product ${productid}: Qty = ${qty}, Subtotal = ${currency} ${newSubtotal}`);
+                // console.log(`Updated Product ${productid}: Qty = ${qty}, Subtotal = ${currency} ${newSubtotal}`);
             }
         });
 
 
     });
+
+
+
+window.Echo.private(`CDUpdateGrandTotal.${current_user_id}`)
+    .listen("CDUpdateGrandTotal", (e) => {
+        // console.log("Updating GrandTOtal ");
+        // console.log("GrandTOtal is: " + e.grand_total);
+        $(".total-row.grand-total span:last-child").text(currency + " " + e.grand_total);
+    })

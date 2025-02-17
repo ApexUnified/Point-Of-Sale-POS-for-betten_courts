@@ -31,3 +31,6 @@ Broadcast::channel("AddProductCD.{user_id}", function ($user, $user_id) {
 Broadcast::channel("SubtractProductCD.{user_id}", function ($user, $user_id) {
     return (int) $user->id === (int) $user_id;
 });
+Broadcast::channel("CDUpdateGrandTotal.{user_id}", function ($user, $user_id) {
+    return (int) $user->id === (int) $user_id;
+});

@@ -117,15 +117,8 @@
         <div class="hidden-print">
             <table>
                 <tr>
-                    <td><a href="{{ $url }}" class="btn btn-info"><i class="fa fa-arrow-left"></i>
-                            {{ trans('file.Back') }}</a> </td>
                     <td><button onclick="window.print();" class="btn btn-primary "><i class="dripicons-print"></i>
-                            {{ trans('file.Print') }}</button></td>
-                    @if ($warehouse->print_kitchen == 1)
-                        <td><a href="{{ route('sale.invoice.kitchen', $lims_sale_data->id) }}" class="btn btn-primary"
-                                style="margin-left: 2rem"> {{ trans('Print_Kitchen') }}</a></td>
-                    @endif
-
+                            {{ trans('file.Print') }}</button></td> 
                 </tr>
             </table>
             <br>

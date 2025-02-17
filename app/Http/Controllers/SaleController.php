@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\AddProductCD;
+use App\Events\CDUpdateGrandTotal;
 use App\Events\ClearCustomerDisplay;
 use App\Events\DeleteProductFromCD;
 use App\Events\SaleCustomerDisplayProductUpdate;
@@ -3422,14 +3423,14 @@ class SaleController extends Controller
 
 
         $product = [
-            "product_code" => $product_code[0],
-            "product_qty"  => $product_qty[0],
-            "product_discount" => $product_discount[0],
-            "product_unit_price" => $product_unit_price[0],
-            "product_subtotal" => $product_subtotal[0],
-            "product_name" => $product_name[0],
-            "tax_name" => $tax_name[0],
-            "tax_rate" => $tax_rate[0],
+            "product_code" => $product_code,
+            "product_qty"  => $product_qty,
+            "product_discount" => $product_discount,
+            "product_unit_price" => $product_unit_price,
+            "product_subtotal" => $product_subtotal,
+            "product_name" => $product_name,
+            "tax_name" => $tax_name,
+            "tax_rate" => $tax_rate,
             'order_tax_rate' => $request->input("order_tax_rate"),
             'order_discount_type' => $request->input("order_discount_type"),
             'order_discount_value' => $request->input("order_discount_value", 0),
@@ -3468,7 +3469,7 @@ class SaleController extends Controller
             "product_subtotal" => $product_subtotal,
         ];
 
-        Log::info($product);
+        // Log::info($product);
 
 
         broadcast(new DeleteProductFromCD($product, Auth::id()));
@@ -3485,5 +3486,14 @@ class SaleController extends Controller
     {
         broadcast(new SubtractProductCD($request->input("product_code"), Auth::id()));
         return true;
+    }
+
+
+    public function SaleCustomerUpdateGrandTotal(Request $request)
+    {
+        $grandtotal = $request->input('grand_total');
+        // Log::info("Grand Total is: " . $grandtotal);
+
+        broadcast(new CDUpdateGrandTotal($grandtotal, Auth::id()));
     }
 }

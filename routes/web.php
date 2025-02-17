@@ -313,6 +313,7 @@ Route::group(['middleware' => ['common', 'auth', 'active']], function () {
         Route::get("/sale-customer-clear-display", "SaleCustomerDisplayClear")->name("sale.customer.display.clear");
         Route::post("/add-product-cd", "addProductCD");
         Route::post("/subtract-product-cd", "SubtractProductCD");
+        Route::post("/sale-customer-display-update-grand-total", "SaleCustomerUpdateGrandTotal");
     });
     Route::resource('sales', SaleController::class);
 

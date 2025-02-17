@@ -1676,19 +1676,36 @@
 
 
          function updateCDDisplayedProducts(){
-            let cdProduct_code = localStorage.getItem("localStorageProductCode");
-            let cdProduct_UnitPrice = localStorage.getItem("localStorageNetUnitPrice");
-            let cdProduct_discount = localStorage.getItem("localStorageProductDiscount");
-            let cdProduct_Qty = localStorage.getItem("localStorageQty");
-            let cdProduct_Subtotal = localStorage.getItem("localStorageSubTotal");
-            let cdTaxName = localStorage.getItem("localStorageTaxName");
-            let cdTaxRate = localStorage.getItem("localStorageTaxRate");
-            let cdOrderTax = localStorage.getItem("order-tax-rate-select");
-            let cdOrderDiscount = localStorage.getItem("order-discount-type");
-            let cdOrderDiscoutValue = localStorage.getItem("order-discount-val");
-            let cdCopounGrandTotal = localStorage.getItem("after_copoun_grand_total") || 0;
-            let cdCopounType = localStorage.getItem("copoun_type") || null;
-            let cdCopounAmont = localStorage.getItem("copoun_amount") || 0;
+
+
+            let cdProduct_code = null;
+            let cdProduct_UnitPrice = null;
+            let cdProduct_discount = null;
+            let cdProduct_Qty = null;
+            let cdProduct_Subtotal = null;
+            let cdTaxName = null;
+            let cdTaxRate = null;
+            let cdOrderTax = null;
+            let cdOrderDiscount = null;
+            let cdOrderDiscoutValue = null;
+            let cdCopounGrandTotal = null;
+            let cdCopounType = null;
+            let cdCopounAmont = null;
+
+
+             cdProduct_code = localStorage.getItem("localStorageProductCode");
+             cdProduct_UnitPrice = localStorage.getItem("localStorageNetUnitPrice");
+             cdProduct_discount = localStorage.getItem("localStorageProductDiscount");
+             cdProduct_Qty = localStorage.getItem("localStorageQty");
+             cdProduct_Subtotal = localStorage.getItem("localStorageSubTotal");
+             cdTaxName = localStorage.getItem("localStorageTaxName");
+             cdTaxRate = localStorage.getItem("localStorageTaxRate");
+             cdOrderTax = localStorage.getItem("order-tax-rate-select");
+             cdOrderDiscount = localStorage.getItem("order-discount-type");
+             cdOrderDiscoutValue = localStorage.getItem("order-discount-val");
+             cdCopounGrandTotal = localStorage.getItem("after_copoun_grand_total") || 0;
+             cdCopounType = localStorage.getItem("copoun_type") || null;
+             cdCopounAmont = localStorage.getItem("copoun_amount") || 0;
 
 
             $.ajax({
@@ -1760,7 +1777,6 @@
                 method: "POST",
                 data: {product_code: product_code},
                 success: function(){
-                    updateCDDisplayedProducts();
                 }
             });
         }
@@ -1771,7 +1787,6 @@
                 method: "POST",
                 data: {product_code: product_code},
                 success: function(){
-                    updateCDDisplayedProducts();
                 }
             });
         }
@@ -2726,6 +2741,14 @@
 
         $(".coupon-check").on("click", function() {
             couponDiscount();
+             
+            let GrandTotalAfterCoupon = $("#grand-total").text();
+            $.ajax({
+                    url: "/sale-customer-display-update-grand-total",
+                    method: "POST",
+                    data: {grand_total:GrandTotalAfterCoupon},
+                });
+
         });
 
         $(".payment-btn").on("click", function() {
@@ -3201,6 +3224,8 @@
                             $('input[name="grand_total"]').val(grand_total);
                             $('#grand-total').text(parseFloat(grand_total).toFixed(
                                 {{ $general_setting->decimal }}));
+
+
                             if (!$('input[name="coupon_active"]').val())
                                 alert('Congratulation! You got ' + value['amount'] + '% discount');
                             $(".coupon-check").prop("disabled", true);
@@ -3446,7 +3471,7 @@
                 // Calculate Order Tax AFTER discount
                 var taxable_amount = subtotal - order_discount;
                 var order_tax = taxable_amount * (order_tax_rate / 100);
-                console.log("POS Order TAX: " + order_tax.toFixed(2));
+                // console.log("POS Order TAX: " + order_tax.toFixed(2));
 
                 // Calculate Grand Total
                 var grand_total = (taxable_amount + order_tax + shipping_cost);
@@ -3454,8 +3479,20 @@
                 // Apply Coupon Discount
                 couponDiscount();
                 var coupon_discount = parseFloat($('input[name="coupon_discount"]').val()) || 0;
+
                 coupon_discount *= exchange_rate;
                 grand_total -= coupon_discount;
+
+                // console.log("Grand Total Is: " + parseFloat(grand_total).toFixed(2));
+
+                // Updating GrandTotal In CD
+                $.ajax({
+                    url: "/sale-customer-display-update-grand-total",
+                    method: "POST",
+                    data: {grand_total:grand_total.toFixed(2)},
+                });
+                // Updating GrandTotal In CD
+
 
                 // Update UI
                 itemIndex = ++itemIndex + '(' + total_qty + ')';
@@ -3470,6 +3507,7 @@
                 $('input[name="shipping_cost"]').val(shipping_cost.toFixed(2));
 
                 $('#grand-total').text(grand_total.toFixed(2));
+                // console.log("Grand Total Input Value: " +   $('#grand-total').text(grand_total.toFixed(2)));
                 $('input[name="grand_total"]').val(grand_total.toFixed(2));
 
                 // Reset currency change flag
@@ -3577,6 +3615,8 @@
                 cancel($('table.order-list tbody tr:last').index());
                 clearCD();
                 localStorage.clear();
+                sessionStorage.clear();
+                location.reload();
             }
             return false;
         }

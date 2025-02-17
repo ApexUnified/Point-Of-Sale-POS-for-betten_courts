@@ -10,17 +10,16 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 
-class SaleProductUpdateCD implements ShouldBroadcastNow
+class CDUpdateGrandTotal implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $product;
+    public $grand_total;
     public $user_id;
-    public function __construct($product, $user_id)
+    public function __construct($grand_total, $user_id)
     {
-        $this->product = $product;
+        $this->grand_total = $grand_total;
         $this->user_id = $user_id;
     }
 
@@ -32,7 +31,7 @@ class SaleProductUpdateCD implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel("SaleProductUpdateCD.{$this->user_id}"),
+            new PrivateChannel("CDUpdateGrandTotal.{$this->user_id}"),
         ];
     }
 
@@ -40,7 +39,7 @@ class SaleProductUpdateCD implements ShouldBroadcastNow
     public function broadcastWith(): array
     {
         return [
-            'product' => $this->product,
+            'grand_total' => $this->grand_total,
             'user_id' => $this->user_id
         ];
     }

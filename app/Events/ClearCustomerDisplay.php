@@ -27,7 +27,7 @@ class ClearCustomerDisplay implements ShouldBroadcastNow
      */
     public function broadcastOn(): array
     {
-        \Log::info("Clearing Display");
+        // \Log::info("Clearing Display");
         return [
             new PrivateChannel("ClearCustomerDisplay.{$this->user_id}"),
         ];
