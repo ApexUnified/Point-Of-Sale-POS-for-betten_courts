@@ -774,19 +774,36 @@
 
                 {!! Form::close() !!}
 
+             
+
                 {{-- Category Slider --}}
                 @if (in_array('category', json_decode($general_setting->display_section, true)))
                     <div class="col-md-2"
                         style="overflow-y: scroll;height:100vh;align-content-center; background-color:#ecedee; box-shadow:0 4px 24px 0 rgba(34, 41, 47, .1);">
                         @foreach ($lims_category_list as $category)
+
+
+                        @php
+                        $color = ltrim($category->color_code, '#'); // Remove # if exists
+                        $r = hexdec(substr($color, 0, 2)); // Red
+                        $g = hexdec(substr($color, 2, 2)); // Green
+                        $b = hexdec(substr($color, 4, 2)); // Blue
+                
+                        // Calculate luminance
+                        $luminance = (0.299 * $r) + (0.587 * $g) + (0.114 * $b);
+                
+                        // Decide text color: White for dark, Black for light
+                        $textColor = ($luminance < 128) ? '#ffffff' : '#000000'; 
+                    @endphp
+
                             <div class="col-md-12  p-2 d-flex flex-wrap align-items-center my-2 category-img text-center mb-2"
-                                style="background-color: #fff; border-radius:5px" data-category="{{ $category->id }}">
+                                style="background-color: {{ $category->color_code ?? "#fff" }};  font-weight:bold; border-radius:5px" data-category="{{ $category->id }}">
                                 @if ($category->image)
                                     <img src="{{ url('public/images/category', $category->image) }}" />
                                 @else
                                     <img src="{{ asset('images/zummXD2dvAtI.png') }}" />
                                 @endif
-                                <p class="text-center text-dark" style="margin: auto 0px auto 20px;">
+                                <p class="text-center fw-bold" style="margin: auto 0px auto 20px; color:{{ $category->color_code != null ? $textColor : "#33333" }}">
                                     {{ $category->name }}</p>
                             </div>
                         @endforeach

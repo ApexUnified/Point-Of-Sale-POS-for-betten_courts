@@ -6,13 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    protected $fillable =[
+    protected $fillable = [
 
-        "name", 'image', "parent_id", "is_active", "is_sync_disable", "woocommerce_category_id"
+        "name",
+        'image',
+        "parent_id",
+        "is_active",
+        "is_sync_disable",
+        "woocommerce_category_id",
+        "color_code"
     ];
 
     public function product()
     {
-    	return $this->hasMany('App\Models\Product');
+        return $this->hasMany('App\Models\Product');
     }
 }

@@ -28,6 +28,7 @@
                     <th>{{trans('file.Number of Product')}}</th>
                     <th>{{trans('file.Stock Quantity')}}</th>
                     <th>{{trans('file.Stock Worth (Price/Cost)')}}</th>
+                    <th>Color Code</th>
                     <th class="not-exported">{{trans('file.action')}}</th>
                 </tr>
             </thead>
@@ -65,43 +66,14 @@
                     @endforeach
                 </select>
             </div>
-            @if (\Schema::hasColumn('categories', 'woocommerce_category_id'))
-            <div class="col-md-6 form-group mt-4">
-                <h5><input name="is_sync_disable" type="checkbox" id="is_sync_disable" value="1">&nbsp; {{trans('file.Disable Woocommerce Sync')}}</h5>
-            </div>
-            @endif
-            @if(in_array('ecommerce',explode(',',$general_setting->modules)))
-            <div class="col-md-12 mt-3">
-                <h6><strong>{{ __('For Website') }}</strong></h6>
-                <hr>
-            </div>
 
-            <div class="col-md-6 form-group">
-                <label>{{ __('Icon') }}</label>
-                <input type="file" name="icon" class="form-control">
-            </div> 
-            <div class="col-md-6 form-group">
-                <br>
-                <input type="checkbox" name="featured" id="featured" value="1"> <label>{{ __('List on category dropdown') }}</label>
+            <div class="col-md-6 form-group d-block">
+                <label>Select Color Of Category</label>
+                Color: <input id="color_code" name="color_code" data-jscolor="{}">
             </div>
-            @endif
+           
         </div>
-        @if(in_array('ecommerce',explode(',',$general_setting->modules)))
-        <div class="row">
-            <div class="col-md-12 mt-3">
-                <h6><strong>{{ __('For SEO') }}</strong></h6>
-                <hr>
-            </div>
-            <div class="col-md-12 form-group">
-                <label>{{ __('Meta Title') }}</label>
-                {{Form::text('page_title',null,array('class' => 'form-control', 'placeholder' => 'Meta Title...'))}}
-            </div>
-            <div class="col-md-12 form-group">
-                <label>{{ __('Meta Description') }}</label>
-                {{Form::text('short_description',null,array('class' => 'form-control', 'placeholder' => 'Meta Description...'))}}
-            </div>
-        </div>
-        @endif
+      
 
         <div class="form-group">
             <input type="submit" value="{{trans('file.submit')}}" class="btn btn-primary">
@@ -147,6 +119,7 @@
 
 @endsection
 @push('scripts')
+
 <script type="text/javascript">
     $("ul#product").siblings('a').attr('aria-expanded','true');
     $("ul#product").addClass("show");
@@ -177,6 +150,7 @@
             $("#editModal input[name='name']").val(data['name']);
             $("#editModal select[name='parent_id']").val(data['parent_id']);
             $("#editModal input[name='category_id']").val(data['id']);
+            $("#editModal input[name='color_code']").val(data['color_code']);
             if (data['is_sync_disable']) {
                 $("#editModal input[name='is_sync_disable']").prop("checked", true);
             }
@@ -207,6 +181,7 @@
             {"data": "number_of_product"},
             {"data": "stock_qty"},
             {"data": "stock_worth"},
+            {"data": "color_code"},
             {"data": "options"},
         ],
         'language': {

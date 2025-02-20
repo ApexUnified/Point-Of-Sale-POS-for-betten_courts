@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 16, 2025 at 11:57 AM
+-- Generation Time: Feb 17, 2025 at 09:45 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -179,7 +179,8 @@ INSERT INTO `cash_registers` (`id`, `cash_in_hand`, `user_id`, `warehouse_id`, `
 (7, 4000, 1, 3, 1, '2024-12-12 07:31:07', '2024-12-12 07:31:07'),
 (8, 500, 1, 1, 1, '2024-12-12 07:31:12', '2024-12-12 07:31:12'),
 (9, 500, 1, 4, 1, '2024-12-12 08:48:48', '2024-12-12 08:48:48'),
-(10, 1000, 14, 1, 1, '2025-02-09 05:39:01', '2025-02-09 05:39:01');
+(10, 1000, 14, 1, 1, '2025-02-09 05:39:01', '2025-02-09 05:39:01'),
+(11, 500, 18, 1, 1, '2025-02-17 05:46:08', '2025-02-17 05:46:08');
 
 -- --------------------------------------------------------
 
@@ -286,7 +287,7 @@ INSERT INTO `coupons` (`id`, `code`, `type`, `amount`, `minimum_amount`, `quanti
 (1, 'EMG1bF5527', 'percentage', 500, NULL, 5, 0, '2024-10-07', 1, 0, '2024-10-07 13:24:32', '2024-10-07 13:24:40'),
 (2, 'TeFYND6901', 'percentage', 500, NULL, 5, 1, '2024-11-17', 1, 1, '2024-11-17 07:50:49', '2024-11-17 07:52:09'),
 (3, '6FlMdDeh8d', 'fixed', 2000, 200, 5, 0, '2024-11-17', 1, 1, '2024-11-17 13:39:32', '2024-11-17 13:39:32'),
-(4, 'uW4349nG1T', 'percentage', 10, 0, 5, 3, '2025-02-15', 1, 1, '2025-02-14 11:05:39', '2025-02-14 12:59:41');
+(4, 'uW4349nG1T', 'percentage', 10, 0, 10, 5, '2025-02-28', 1, 1, '2025-02-14 11:05:39', '2025-02-17 07:13:31');
 
 -- --------------------------------------------------------
 
@@ -380,7 +381,7 @@ CREATE TABLE `customers` (
 
 INSERT INTO `customers` (`id`, `customer_group_id`, `user_id`, `name`, `company_name`, `email`, `phone_number`, `tax_no`, `address`, `city`, `state`, `postal_code`, `country`, `points`, `deposit`, `expense`, `is_active`, `created_at`, `updated_at`, `ecom`, `dsf`, `arabic_name`, `admin`, `franchise_location`, `customer_type`, `customer_assigned_to`, `assigned`, `aaaaaaaa`, `district`) VALUES
 (1, 1, NULL, 'customer', NULL, NULL, '12345', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2024-10-07 13:02:02', '2024-10-07 13:21:09', NULL, 'df', NULL, NULL, NULL, 'Same as Customer', 'Advocate', 'Advocate', 'aa', NULL),
-(2, 1, 7, 'Walk_In', NULL, NULL, '0000000', NULL, NULL, 'Georgetown', 'South America', NULL, 'Guyana', 2798, NULL, NULL, 1, '2024-11-13 20:19:15', '2025-02-15 11:18:47', NULL, 'df', NULL, NULL, NULL, 'Same as Customer', 'Advocate', 'Advocate', 'aa', NULL);
+(2, 1, 7, 'Walk_In', NULL, NULL, '0000000', NULL, NULL, 'Georgetown', 'South America', NULL, 'Guyana', 4484, 5000, 0, 1, '2024-11-13 20:19:15', '2025-02-17 07:13:31', NULL, 'df', NULL, NULL, NULL, 'Same as Customer', 'Advocate', 'Advocate', 'aa', NULL);
 
 -- --------------------------------------------------------
 
@@ -494,6 +495,13 @@ CREATE TABLE `deposits` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `deposits`
+--
+
+INSERT INTO `deposits` (`id`, `amount`, `customer_id`, `user_id`, `note`, `created_at`, `updated_at`) VALUES
+(1, 5000, 2, 1, NULL, '2025-02-17 04:40:44', '2025-02-17 04:40:44');
 
 -- --------------------------------------------------------
 
@@ -1278,7 +1286,15 @@ INSERT INTO `payments` (`id`, `payment_reference`, `user_id`, `purchase_id`, `sa
 (30, 'spr-20250214-060210', 1, NULL, 27, 8, 1, NULL, 50, NULL, 0, 'Credit Card', NULL, '2025-02-14 13:02:10', '2025-02-14 13:02:10'),
 (31, 'spr-20250214-060242', 1, NULL, 28, 8, 1, NULL, 3276, NULL, 0, 'Cash', NULL, '2025-02-14 13:02:42', '2025-02-14 13:02:42'),
 (32, 'spr-20250214-060523', 1, NULL, 29, 8, 1, NULL, 45, NULL, 0, 'Cash', NULL, '2025-02-14 13:05:23', '2025-02-14 13:05:23'),
-(33, 'spr-20250215-041847', 1, NULL, 30, 8, 1, NULL, 85850, NULL, 0, 'Credit Card', NULL, '2025-02-15 11:18:47', '2025-02-15 11:18:47');
+(33, 'spr-20250215-041847', 1, NULL, 30, 8, 1, NULL, 85850, NULL, 0, 'Credit Card', NULL, '2025-02-15 11:18:47', '2025-02-15 11:18:47'),
+(34, 'spr-20250217-093949', 1, NULL, 31, 8, 1, NULL, 38892, NULL, 0, 'Credit Card', NULL, '2025-02-17 04:39:49', '2025-02-17 04:39:49'),
+(35, 'spr-20250217-094110', 1, NULL, 4, 8, 1, NULL, -19, NULL, 0, 'Cash', NULL, '2025-02-17 04:41:10', '2025-02-17 04:41:10'),
+(36, 'spr-20250217-094110', 1, NULL, 23, 8, 1, NULL, -0.19999999999709, NULL, 0, 'Cash', NULL, '2025-02-17 04:41:10', '2025-02-17 04:41:10'),
+(37, 'spr-20250217-094111', 1, NULL, 25, 8, 1, NULL, -0.39999999999418, NULL, 0, 'Cash', NULL, '2025-02-17 04:41:11', '2025-02-17 04:41:11'),
+(38, 'spr-20250217-104259', 1, NULL, 32, 8, 1, NULL, 1449.08, NULL, 0, 'Credit Card', NULL, '2025-02-17 05:42:59', '2025-02-17 05:42:59'),
+(39, 'spr-20250217-114351', 1, NULL, 33, 8, 1, NULL, 380130.29, NULL, 0, 'Credit Card', NULL, '2025-02-17 06:43:51', '2025-02-17 06:43:51'),
+(40, 'spr-20250217-114937', 1, NULL, 34, 8, 1, NULL, 1610, NULL, 0, 'Cheque', NULL, '2025-02-17 06:49:37', '2025-02-17 06:49:37'),
+(41, 'spr-20250217-120401', 1, NULL, 35, 8, 1, NULL, 1610, 6, 0, 'Points', NULL, '2025-02-17 07:04:01', '2025-02-17 07:04:01');
 
 -- --------------------------------------------------------
 
@@ -1299,7 +1315,8 @@ CREATE TABLE `payment_with_cheque` (
 --
 
 INSERT INTO `payment_with_cheque` (`id`, `payment_id`, `cheque_no`, `created_at`, `updated_at`) VALUES
-(1, 29, '44455211133366422', '2025-02-14 12:59:42', '2025-02-14 12:59:42');
+(1, 29, '44455211133366422', '2025-02-14 12:59:42', '2025-02-14 12:59:42'),
+(2, 40, '44455211133366422', '2025-02-17 06:49:37', '2025-02-17 06:49:37');
 
 -- --------------------------------------------------------
 
@@ -1600,8 +1617,8 @@ INSERT INTO `products` (`id`, `name`, `code`, `type`, `barcode_symbology`, `bran
 (1, 'Burger', '1234457', 'standard', 'C128', 1, 1, 1, 1, 1, 50, 60, 50, 142, 10, 10, NULL, NULL, NULL, NULL, NULL, 1, '202409260726112.jpg,202409260726362.jpg,202409260727123.jpg', NULL, 1, NULL, NULL, 0, NULL, 1, NULL, NULL, NULL, NULL, '', NULL, NULL, 0, '2024-09-20 15:08:23', '2024-10-07 13:26:17'),
 (2, 'Griffith Bright', '04028375', 'standard', 'C128', 1, 1, 1, 1, 1, 43, 59, 170, 10035, 899, 13, NULL, NULL, NULL, NULL, NULL, 1, '202409260725422.jpg', NULL, 0, NULL, 1, 0, 1, 1, NULL, NULL, NULL, NULL, '', NULL, NULL, 0, '2024-09-21 11:52:29', '2024-10-07 07:32:03'),
 (21, 'demo', '38196001', 'standard', 'C128', NULL, 11, 1, 1, 1, 50, 60, 30, 497, 10, 10, NULL, NULL, NULL, NULL, NULL, 1, '202411170801182.png', NULL, 0, NULL, NULL, 0, NULL, 1, NULL, NULL, NULL, NULL, '', NULL, NULL, 0, '2024-11-17 18:50:08', '2024-11-18 11:35:03'),
-(22, 'Greens &amp; Chicken', '87413239', 'standard', 'C128', NULL, 12, 1, 1, 1, 30, 50, 10, 9984, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '202502130437172.jpg', NULL, 0, NULL, NULL, 0, NULL, 0, NULL, NULL, NULL, NULL, '', NULL, NULL, 1, '2024-11-18 11:58:51', '2025-02-15 11:18:47'),
-(24, 'Serv. Greens &amp; Chicken', '41257693', 'standard', 'C128', NULL, 12, 1, 1, 1, 1400, 1560, 1500, 341, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'zummXD2dvAtI.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, 1, '2024-11-18 12:01:53', '2025-02-15 11:18:47'),
+(22, 'Greens &amp; Chicken', '87413239', 'standard', 'C128', NULL, 12, 1, 1, 1, 30, 50, 10, 9902, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '202502130437172.jpg', NULL, 0, NULL, NULL, 0, NULL, 0, NULL, NULL, NULL, NULL, '', NULL, NULL, 1, '2024-11-18 11:58:51', '2025-02-17 07:13:31'),
+(24, 'Serv. Greens &amp; Chicken', '41257693', 'standard', 'C128', NULL, 12, 1, 1, 1, 1400, 1560, 1500, 303, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'zummXD2dvAtI.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, 1, '2024-11-18 12:01:53', '2025-02-17 07:13:31'),
 (25, 'Bora B.C', '30641240', 'standard', 'C128', NULL, 12, 1, 1, 1, 2200, 2460, 2400, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'zummXD2dvAtI.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, 1, '2024-11-18 12:03:00', '2024-11-18 12:03:00'),
 (26, 'Bora F.C', '12393986', 'standard', 'C128', NULL, 12, 1, 1, 1, 2300, 2500, 2400, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'zummXD2dvAtI.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, 1, '2024-11-18 12:03:45', '2024-11-18 12:03:45'),
 (27, 'Pumpkin B.C', '16650572', 'standard', 'C128', NULL, 12, 1, 1, 1, 2200, 2460, 2400, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'zummXD2dvAtI.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, 1, '2024-11-18 12:04:36', '2024-11-18 12:04:36'),
@@ -1761,7 +1778,7 @@ INSERT INTO `products` (`id`, `name`, `code`, `type`, `barcode_symbology`, `bran
 (181, 'Bernard Crane', '76524716', 'standard', 'C128', NULL, 24, 1, 1, 1, 50, 568, 416, 0, 38, 16, NULL, NULL, NULL, NULL, NULL, 1, 'zummXD2dvAtI.png', NULL, 1, NULL, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, 1, '2024-11-28 14:20:07', '2024-11-28 14:20:07'),
 (183, 'Demo', '83419791', 'standard', 'C128', NULL, 12, 1, 1, 1, 39, 729, 650, 0, 651, 33, 1, '832', '1996-06-05', '1978-06-21', NULL, 1, 'zummXD2dvAtI.png', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, 1, '2024-11-28 14:22:26', '2024-11-28 14:22:26'),
 (184, 'Melissa Pollard', '19806907', 'standard', 'UPCA', NULL, 12, 1, 1, 1, 8, 61, 801, 3, 69, 11, 1, '329', '1988-08-01', '1985-01-22', NULL, 1, 'zummXD2dvAtI.png', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, 1, '2024-11-28 14:23:21', '2024-11-28 14:23:21'),
-(185, 'Another Demo', '25399438', 'standard', 'C128', NULL, 12, 1, 1, 1, 111, 1111, 111, 510, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'zummXD2dvAtI.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, 1, '2024-12-11 15:05:22', '2025-02-13 14:56:46'),
+(185, 'Another Demo', '25399438', 'standard', 'C128', NULL, 12, 1, 1, 1, 111, 1111, 111, 8, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'zummXD2dvAtI.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, 1, '2024-12-11 15:05:22', '2025-02-17 06:43:51'),
 (187, 'demooooo2', '43826951', 'standard', 'C128', NULL, 16, 1, 1, 1, 222, 222222, 22222, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'zummXD2dvAtI.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, 1, '2024-12-12 08:55:40', '2024-12-12 08:55:40');
 
 -- --------------------------------------------------------
@@ -1992,7 +2009,18 @@ INSERT INTO `product_sales` (`id`, `sale_id`, `product_id`, `product_batch_id`, 
 (30, 28, 24, NULL, NULL, NULL, 2, 0, 1, 1560, 0, 0, 0, 3120, '2025-02-14 13:02:42', '2025-02-14 13:02:42', NULL, NULL),
 (31, 29, 22, NULL, NULL, NULL, 1, 0, 1, 50, 0, 0, 0, 50, '2025-02-14 13:05:23', '2025-02-14 13:05:23', NULL, NULL),
 (32, 30, 24, NULL, NULL, NULL, 55, 0, 1, 1560, 0, 0, 0, 85800, '2025-02-15 11:18:47', '2025-02-15 11:18:47', NULL, NULL),
-(33, 30, 22, NULL, NULL, NULL, 1, 0, 1, 50, 0, 0, 0, 50, '2025-02-15 11:18:47', '2025-02-15 11:18:47', NULL, NULL);
+(33, 30, 22, NULL, NULL, NULL, 1, 0, 1, 50, 0, 0, 0, 50, '2025-02-15 11:18:47', '2025-02-15 11:18:47', NULL, NULL),
+(34, 31, 24, NULL, NULL, NULL, 30, 0, 1, 1510, 1500, 0, 0, 45300, '2025-02-17 04:39:49', '2025-02-17 04:39:49', NULL, NULL),
+(35, 31, 22, NULL, NULL, NULL, 20, 0, 1, 50, 0, 0, 0, 1000, '2025-02-17 04:39:49', '2025-02-17 04:39:49', NULL, NULL),
+(36, 32, 24, NULL, NULL, NULL, 1, 0, 1, 1560, 0, 0, 0, 1560, '2025-02-17 05:42:59', '2025-02-17 05:42:59', NULL, NULL),
+(37, 32, 22, NULL, NULL, NULL, 1, 0, 1, 50, 0, 0, 0, 50, '2025-02-17 05:42:59', '2025-02-17 05:42:59', NULL, NULL),
+(38, 33, 185, NULL, NULL, NULL, 502, 0, 1, 1111, 0, 0, 0, 557722, '2025-02-17 06:43:51', '2025-02-17 06:43:51', NULL, NULL),
+(39, 33, 24, NULL, NULL, NULL, 5, 0, 1, 1540, 100, 5, 385, 8085, '2025-02-17 06:43:51', '2025-02-17 06:43:51', NULL, NULL),
+(40, 33, 22, NULL, NULL, NULL, 59, 0, 1, 50, 0, 0, 0, 2950, '2025-02-17 06:43:51', '2025-02-17 06:43:51', NULL, NULL),
+(41, 34, 24, NULL, NULL, NULL, 1, 0, 1, 1560, 0, 0, 0, 1560, '2025-02-17 06:49:37', '2025-02-17 06:49:37', NULL, NULL),
+(42, 34, 22, NULL, NULL, NULL, 1, 0, 1, 50, 0, 0, 0, 50, '2025-02-17 06:49:37', '2025-02-17 06:49:37', NULL, NULL),
+(43, 35, 24, NULL, NULL, NULL, 1, 0, 1, 1560, 0, 0, 0, 1560, '2025-02-17 07:04:01', '2025-02-17 07:04:01', NULL, NULL),
+(44, 35, 22, NULL, NULL, NULL, 1, 0, 1, 50, 0, 0, 0, 50, '2025-02-17 07:04:01', '2025-02-17 07:04:01', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2063,9 +2091,9 @@ INSERT INTO `product_warehouse` (`id`, `product_id`, `product_batch_id`, `varian
 (1, '153', NULL, NULL, NULL, 1, 7, NULL, '2024-12-12 16:11:03', '2025-02-13 15:41:10'),
 (2, '153', NULL, NULL, NULL, 3, 200, NULL, '2024-12-12 16:14:01', '2024-12-12 16:14:01'),
 (3, '153', NULL, NULL, NULL, 4, 200, NULL, '2024-12-12 16:14:36', '2024-12-12 16:17:30'),
-(4, '22', NULL, NULL, NULL, 1, 9985, NULL, '2025-02-13 07:25:31', '2025-02-15 11:18:47'),
-(5, '24', NULL, NULL, NULL, 1, 343, 1560, '2025-02-13 13:37:47', '2025-02-15 11:18:47'),
-(6, '185', NULL, NULL, NULL, 1, 500, 1111, '2025-02-13 14:56:46', '2025-02-13 14:56:46'),
+(4, '22', NULL, NULL, NULL, 1, 9903, NULL, '2025-02-13 07:25:31', '2025-02-17 07:13:31'),
+(5, '24', NULL, NULL, NULL, 1, 305, 1560, '2025-02-13 13:37:47', '2025-02-17 07:13:31'),
+(6, '185', NULL, NULL, NULL, 1, -2, 1111, '2025-02-13 14:56:46', '2025-02-17 06:43:51'),
 (7, '151', NULL, NULL, NULL, 1, 494, 240, '2025-02-13 14:58:41', '2025-02-14 12:59:41'),
 (8, '174', NULL, NULL, NULL, 1, 500, 100, '2025-02-13 14:59:11', '2025-02-13 14:59:11');
 
@@ -2846,7 +2874,7 @@ INSERT INTO `sales` (`id`, `reference_no`, `user_id`, `cash_register_id`, `table
 (1, 'posr-20241212-052005', 1, 8, NULL, NULL, 2, 1, 3, 1, 1, 0, 0, 360, 360, 4, 1, 0, 0, 'Flat', NULL, 0, NULL, NULL, 0, 1, 4, NULL, 360, NULL, NULL, '2024-12-12 16:20:05', '2024-12-12 16:20:05'),
 (2, 'posr-20241212-053630', 1, 8, NULL, NULL, 2, 1, 3, 1, 1, 0, 0, 360, 360, 4, 1, 0, 0, 'Flat', NULL, 0, NULL, NULL, 0, 1, 4, NULL, 360, NULL, NULL, '2024-12-12 16:36:30', '2024-12-12 16:36:30'),
 (3, 'posr-20241212-053859', 1, 8, NULL, NULL, 2, 1, 3, 1, 1, 0, 0, 360, 360, 4, 1, 0, 0, 'Flat', NULL, 0, NULL, NULL, 0, 1, 4, NULL, 360, NULL, NULL, '2024-12-12 16:38:59', '2024-12-12 16:38:59'),
-(4, 'posr-20241212-081341', 1, 8, NULL, NULL, 2, 1, 3, 1, 1, 0, 0, 360, 360, 4, 1, 0, 0, 'Flat', NULL, 0, NULL, NULL, 0, 1, 2, NULL, 379, NULL, NULL, '2024-12-12 19:13:41', '2024-12-15 04:55:38'),
+(4, 'posr-20241212-081341', 1, 8, NULL, NULL, 2, 1, 3, 1, 1, 0, 0, 360, 360, 4, 1, 0, 0, 'Flat', NULL, 0, NULL, NULL, 0, 1, 4, NULL, 360, NULL, NULL, '2024-12-12 19:13:41', '2025-02-17 04:41:10'),
 (5, 'posr-20250126-070827', 14, NULL, NULL, NULL, 2, 1, 3, 1, 1, 0, 0, 360, 360, 4, 1, 0, 0, 'Flat', NULL, 0, NULL, NULL, 0, 1, 4, NULL, 360, NULL, NULL, '2025-01-25 23:00:00', '2025-01-26 18:08:27'),
 (6, 'posr-20250126-070845', 14, NULL, NULL, NULL, 2, 1, 3, 1, 1, 0, 0, 360, 360, 4, 1, 0, 0, 'Flat', NULL, 0, NULL, NULL, 0, 1, 4, NULL, 360, NULL, NULL, '2025-01-25 23:00:00', '2025-01-26 18:08:45'),
 (7, 'posr-20250126-071053', 14, NULL, NULL, NULL, 2, 1, 3, 1, 1, 0, 0, 360, 360, 4, 1, 0, 0, 'Flat', NULL, 0, NULL, NULL, 0, 1, 4, NULL, 360, NULL, NULL, '2025-01-26 18:10:53', '2025-01-26 18:10:53'),
@@ -2862,14 +2890,19 @@ INSERT INTO `sales` (`id`, `reference_no`, `user_id`, `cash_register_id`, `table
 (17, 'posr-20250127-060238', 14, NULL, NULL, NULL, 2, 1, 3, 1, 1, 0, 0, 360, 360, 4, 1, 0, 0, 'Flat', NULL, 0, NULL, NULL, 0, 1, 4, NULL, 360, NULL, NULL, '2025-01-27 05:02:38', '2025-01-27 05:02:38'),
 (18, 'posr-20250212-122356', 1, 8, NULL, NULL, 2, 1, 3, 1, 3, 0, 0, 1080, 1080, 4, 1, 0, 0, 'Flat', NULL, 0, NULL, NULL, 0, 1, 4, NULL, 1080, NULL, NULL, '2025-02-12 07:23:56', '2025-02-12 07:23:56'),
 (19, 'posr-20250213-062527', 1, 8, NULL, NULL, 2, 1, 3, 1, 1, 0, 0, 1000, 1000, 4, 1, 0, 0, 'Flat', NULL, 0, NULL, NULL, NULL, 1, 4, NULL, 1000, NULL, NULL, '2025-02-13 13:25:27', '2025-02-13 13:25:27'),
-(23, 'posr-20250214-054615', 1, 8, NULL, NULL, 2, 1, 3, 1, 50, 0, 0, 78000, 72235.8, 4, 1, 5, 3822, 'Percentage', 2, 1560, 4, 8026.200000000001, NULL, 1, 2, NULL, 72236, NULL, NULL, '2025-02-14 12:46:15', '2025-02-14 12:46:15'),
+(23, 'posr-20250214-054615', 1, 8, NULL, NULL, 2, 1, 3, 1, 50, 0, 0, 78000, 72235.8, 4, 1, 5, 3822, 'Percentage', 2, 1560, 4, 8026.200000000001, NULL, 1, 4, NULL, 72235.8, NULL, NULL, '2025-02-14 12:46:15', '2025-02-17 04:41:11'),
 (24, 'posr-20250214-054827', 1, 8, NULL, NULL, 2, 1, 3, 1, 1, 0, 0, 50, 50, 4, 1, 0, 0, 'Flat', NULL, 0, NULL, NULL, NULL, 1, 4, NULL, 50, NULL, NULL, '2025-02-14 12:48:27', '2025-02-14 12:48:27'),
-(25, 'posr-20250214-055509', 1, 8, NULL, NULL, 2, 1, 3, 2, 60, 0, 0, 78500, 74163.6, 4, 1, 5, 3924, 'Flat', 20, 20, 4, 8240.4, NULL, 1, 2, NULL, 74164, NULL, NULL, '2025-02-14 12:55:09', '2025-02-14 12:55:09'),
+(25, 'posr-20250214-055509', 1, 8, NULL, NULL, 2, 1, 3, 2, 60, 0, 0, 78500, 74163.6, 4, 1, 5, 3924, 'Flat', 20, 20, 4, 8240.4, NULL, 1, 4, NULL, 74163.6, NULL, NULL, '2025-02-14 12:55:09', '2025-02-17 04:41:11'),
 (26, 'posr-20250214-055941', 1, 8, NULL, NULL, 2, 1, 3, 2, 56, 0, 0, 19440, 17670.52, 4, 1, 0, 0, 'Flat', NULL, 0, 4, 1769.477, NULL, 1, 4, NULL, 17670.52, NULL, NULL, '2025-02-14 12:59:41', '2025-02-14 12:59:41'),
 (27, 'posr-20250214-060210', 1, 8, NULL, NULL, 2, 1, 3, 1, 1, 0, 0, 50, 50, 4, 1, 0, 0, 'Flat', NULL, 0, NULL, NULL, NULL, 1, 4, NULL, 50, NULL, NULL, '2025-02-14 13:02:10', '2025-02-14 13:02:10'),
 (28, 'posr-20250214-060242', 1, 8, NULL, NULL, 2, 1, 3, 1, 2, 0, 0, 3120, 3276, 4, 1, 5, 156, 'Flat', NULL, 0, NULL, NULL, NULL, 1, 4, NULL, 3276, NULL, NULL, '2025-02-14 13:02:42', '2025-02-14 13:02:42'),
 (29, 'posr-20250214-060523', 1, 8, NULL, NULL, 2, 1, 3, 1, 1, 0, 0, 50, 45, 4, 1, 0, 0, 'Flat', 5, 5, NULL, NULL, NULL, 1, 4, NULL, 45, NULL, NULL, '2025-02-14 13:05:23', '2025-02-14 13:05:23'),
-(30, 'posr-20250215-041846', 1, 8, NULL, NULL, 2, 1, 3, 2, 56, 0, 0, 85850, 85850, 4, 1, 0, 0, 'Flat', NULL, 0, NULL, NULL, NULL, 1, 4, NULL, 85850, NULL, NULL, '2025-02-15 11:18:46', '2025-02-15 11:18:46');
+(30, 'posr-20250215-041846', 1, 8, NULL, NULL, 2, 1, 3, 2, 56, 0, 0, 85850, 85850, 4, 1, 0, 0, 'Flat', NULL, 0, NULL, NULL, NULL, 1, 4, NULL, 85850, NULL, NULL, '2025-02-15 11:18:46', '2025-02-15 11:18:46'),
+(31, 'posr-20250217-093948', 1, 8, NULL, NULL, 2, 1, 3, 2, 50, 1500, 0, 46300, 38892, 4, 1, 5, 1852, 'Percentage', 20, 9260, NULL, NULL, NULL, 1, 4, NULL, 38892, NULL, NULL, '2025-02-17 04:39:48', '2025-02-17 04:39:48'),
+(32, 'posr-20250217-104259', 1, 8, NULL, NULL, 2, 1, 3, 2, 2, 0, 0, 1610, 1449.08, 4, 1, 0, 0, 'Percentage', NULL, 0, 4, 160.92200000000003, NULL, 1, 4, NULL, 1449.08, NULL, NULL, '2025-02-17 05:42:59', '2025-02-17 05:42:59'),
+(33, 'posr-20250217-114351', 1, 8, NULL, NULL, 2, 1, 3, 3, 566, 100, 385, 568757, 380130.29, 4, 1, 5, 19906.5, 'Percentage', 30, 170627.1, 4, 37906.102000000006, NULL, 1, 4, NULL, 380130.29, NULL, NULL, '2025-02-17 06:43:51', '2025-02-17 06:43:51'),
+(34, 'posr-20250217-114937', 1, 8, NULL, NULL, 2, 1, 3, 2, 2, 0, 0, 1610, 1610, 4, 1, 0, 0, 'Flat', NULL, 0, NULL, NULL, NULL, 1, 4, NULL, 1610, NULL, NULL, '2025-02-17 06:49:37', '2025-02-17 06:49:37'),
+(35, 'posr-20250217-120401', 1, 8, NULL, NULL, 2, 1, 3, 2, 2, 0, 0, 1610, 1610, 4, 1, 0, 0, 'Flat', NULL, 0, NULL, NULL, NULL, 1, 4, NULL, 1610, NULL, NULL, '2025-02-17 07:04:01', '2025-02-17 07:04:01');
 
 -- --------------------------------------------------------
 
@@ -3160,7 +3193,7 @@ CREATE TABLE `warehouses` (
 --
 
 INSERT INTO `warehouses` (`id`, `name`, `phone`, `email`, `address`, `is_active`, `print_kitchen`, `slip_description`, `image`, `created_at`, `updated_at`) VALUES
-(1, 'Bettencourt\'s Home Style Diner', '592-225-1008/592-668-2777', 'orders@bettencourtsfoods.com', 'ZZ 22 Durban Street, Wortmanville, Georgetown\r\nGuyana', 1, 0, 'Thanks For Coming', '1734026650675b259a1d095.jpg', '2024-09-20 15:09:51', '2024-12-12 16:37:44'),
+(1, 'Bettencourt\'s Home Style Diner', '592-225-1008/592-668-2777', 'orders@bettencourtsfoods.com', 'ZZ 22 Durban Street, Wortmanville, Georgetown\r\nGuyana', 1, 1, 'Thanks For Coming', '1734026650675b259a1d095.jpg', '2024-09-20 15:09:51', '2025-02-17 06:46:51'),
 (2, 'Bettencourt\'s Home Style Diner22222', '592-225-1008/592-688-9009', 'orders@bettencourtsfoods.com', 'Branch1-Bettencourt\'s Home Style Diner', 0, 1, '', NULL, '2024-11-28 01:21:11', '2024-12-09 10:23:01'),
 (3, 'Bettencourt\'s Quick Serve', '592-227-7895', 'orders@bettencourtsfoods.com', 'Stall # 51 Stelling View, Stabroek Market, Georgetown\r\nGuyana', 1, 0, 'Thanks For Coming', '1734026672675b25b0326f4.jpg', '2024-11-28 01:21:51', '2024-12-12 16:42:20'),
 (4, 'Bettencourt\'s Meals on Wheels', '592-688-9009', 'orders@bettencourtsfoods.com', 'Bettencourt\'s Mobile Service', 1, 1, 'Thanks', '1734026690675b25c22cf17.jpg', '2024-12-09 10:30:19', '2024-12-12 16:42:30');
@@ -3714,7 +3747,7 @@ ALTER TABLE `brands`
 -- AUTO_INCREMENT for table `cash_registers`
 --
 ALTER TABLE `cash_registers`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -3780,7 +3813,7 @@ ALTER TABLE `departments`
 -- AUTO_INCREMENT for table `deposits`
 --
 ALTER TABLE `deposits`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `discounts`
@@ -3930,13 +3963,13 @@ ALTER TABLE `packing_slip_products`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `payment_with_cheque`
 --
 ALTER TABLE `payment_with_cheque`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `payment_with_credit_card`
@@ -4014,7 +4047,7 @@ ALTER TABLE `product_returns`
 -- AUTO_INCREMENT for table `product_sales`
 --
 ALTER TABLE `product_sales`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `product_transfer`
@@ -4080,7 +4113,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `shift_days`

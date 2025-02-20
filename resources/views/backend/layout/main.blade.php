@@ -637,29 +637,11 @@
                                     @endforeach
                                 </select>
                             </div>
-                            @if (\Schema::hasColumn('categories', 'woocommerce_category_id'))
-                                <div class="col-md-6 form-group mt-4">
-                                    <input class="mt-3" name="is_sync_disable" type="checkbox"
-                                        id="is_sync_disable" value="1">&nbsp;
-                                    {{ trans('file.Disable Woocommerce Sync') }}
-                                </div>
-                            @endif
 
-                            @if (in_array('ecommerce', explode(',', $general_setting->modules)))
-                                <div class="col-md-12 mt-3">
-                                    <h6><strong>{{ __('For Website') }}</strong></h6>
-                                    <hr>
-                                </div>
-
-                                <div class="col-md-6 form-group">
-                                    <label>{{ __('Icon') }}</label>
-                                    <input type="file" name="icon" class="form-control">
-                                </div>
-                                <div class="col-md-6 form-group">
-                                    <input class="mt-5" type="checkbox" name="featured" id="featured"
-                                        value="1"> <label>{{ __('List on category dropdown') }}</label>
-                                </div>
-                            @endif
+                            <div class="col-md-6 form-group d-block">
+                                <label>Select Color Of Category</label>
+                                Color: <input id="color_code" name="color_code" data-jscolor="{}">
+                            </div>
                         </div>
 
                         @if (in_array('ecommerce', explode(',', $general_setting->modules)))
@@ -1280,6 +1262,7 @@
 
 
     </div>
+    <script src="{{ asset("js/jscolor.js") }}"></script>
     @if (!config('database.connections.saleprosaas_landlord'))
         <script type="text/javascript" src="<?php echo asset('vendor/jquery/jquery.min.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo asset('vendor/jquery/jquery-ui.min.js'); ?>"></script>
