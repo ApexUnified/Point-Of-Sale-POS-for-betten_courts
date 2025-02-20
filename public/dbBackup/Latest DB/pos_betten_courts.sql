@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 17, 2025 at 09:45 AM
+-- Generation Time: Feb 20, 2025 at 01:35 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -194,6 +194,7 @@ CREATE TABLE `categories` (
   `image` varchar(191) DEFAULT NULL,
   `parent_id` int(11) DEFAULT NULL,
   `is_active` tinyint(1) DEFAULT NULL,
+  `color_code` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -202,36 +203,39 @@ CREATE TABLE `categories` (
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`id`, `name`, `image`, `parent_id`, `is_active`, `created_at`, `updated_at`) VALUES
-(12, 'Chicken', '20250212124458.jpg', NULL, 1, '2024-11-18 11:34:18', '2024-11-18 11:34:18'),
-(13, 'Fish', NULL, NULL, 1, '2024-11-18 11:34:54', '2024-11-18 11:34:54'),
-(14, 'Beef', NULL, NULL, 1, '2024-11-18 11:35:18', '2024-11-18 11:35:18'),
-(16, 'Mutton', NULL, NULL, 1, '2024-11-18 11:36:01', '2024-11-18 11:36:01'),
-(17, 'Duck', NULL, NULL, 1, '2024-11-18 11:36:12', '2024-11-18 11:36:12'),
-(18, 'Shrimp', NULL, NULL, 1, '2024-11-18 11:36:28', '2024-11-18 11:36:28'),
-(19, 'Prawns', NULL, NULL, 1, '2024-11-18 11:36:42', '2024-11-18 11:36:42'),
-(20, 'vegetarian', NULL, NULL, 1, '2024-11-18 11:37:21', '2024-11-18 11:37:21'),
-(21, 'Meat Cookup', NULL, NULL, 1, '2024-11-18 11:38:02', '2024-11-18 11:38:02'),
-(22, 'Pastries', NULL, NULL, 1, '2024-11-18 11:38:15', '2024-11-18 11:38:15'),
-(23, 'Snacks', NULL, NULL, 1, '2024-11-18 11:38:33', '2024-11-18 11:38:33'),
-(24, 'Salads', NULL, NULL, 1, '2024-11-18 11:38:45', '2024-11-18 11:38:45'),
-(25, 'Beverages', NULL, NULL, 1, '2024-11-18 11:39:46', '2024-11-18 11:39:46'),
-(26, 'Local Juices', NULL, NULL, 1, '2024-11-18 11:40:03', '2024-11-18 11:40:03'),
-(27, 'Eco Meal/Chicken', NULL, NULL, 1, '2024-11-18 11:40:26', '2024-11-18 11:40:26'),
-(28, 'Eco Meal/Beef', NULL, NULL, 1, '2024-11-18 11:40:44', '2024-11-18 11:40:44'),
-(29, 'Eco Meal/Fish', NULL, NULL, 1, '2024-11-18 11:41:12', '2024-11-18 11:41:12'),
-(30, 'Cross Burns', NULL, NULL, 1, '2024-11-18 11:41:33', '2024-11-18 11:41:33'),
-(31, 'Mother\'s Day', NULL, NULL, 1, '2024-11-18 11:42:06', '2024-11-18 11:42:06'),
-(32, 'Father\'s Day', NULL, NULL, 1, '2024-11-18 11:42:17', '2024-11-18 11:42:17'),
-(33, 'Valentine Day', NULL, NULL, 1, '2024-11-18 11:42:35', '2024-11-18 11:42:35'),
-(34, 'Food Boxes', NULL, NULL, 1, '2024-11-18 11:42:51', '2024-11-18 11:42:51'),
-(35, 'Cups', NULL, NULL, 1, '2024-11-18 11:43:01', '2024-11-18 11:43:01'),
-(36, 'Soup Bowls', NULL, NULL, 1, '2024-11-18 11:43:45', '2024-11-18 11:43:45'),
-(37, 'Metem Bowls', NULL, NULL, 1, '2024-11-18 11:44:09', '2024-11-18 11:44:09'),
-(38, 'Plastic Containers', NULL, NULL, 1, '2024-11-18 11:44:31', '2024-11-18 11:44:31'),
-(39, 'Delivery', NULL, NULL, 1, '2024-11-18 11:44:43', '2024-11-18 11:44:43'),
-(40, 'Boxes', NULL, NULL, 1, '2024-11-18 13:24:26', '2024-11-18 13:24:26'),
-(41, 'Bowls', NULL, NULL, 1, '2024-11-18 13:24:36', '2024-11-18 13:24:36');
+INSERT INTO `categories` (`id`, `name`, `image`, `parent_id`, `is_active`, `color_code`, `created_at`, `updated_at`) VALUES
+(12, 'Chicken', '20250212124458.jpg', NULL, 1, NULL, '2024-11-18 11:34:18', '2024-11-18 11:34:18'),
+(13, 'Fish', NULL, NULL, 1, NULL, '2024-11-18 11:34:54', '2024-11-18 11:34:54'),
+(14, 'Beef', NULL, NULL, 1, '#FF1212', '2024-11-18 11:35:18', '2024-11-18 11:35:18'),
+(16, 'Mutton', NULL, NULL, 1, NULL, '2024-11-18 11:36:01', '2024-11-18 11:36:01'),
+(17, 'Duck', NULL, NULL, 1, NULL, '2024-11-18 11:36:12', '2024-11-18 11:36:12'),
+(18, 'Shrimp', NULL, NULL, 1, NULL, '2024-11-18 11:36:28', '2024-11-18 11:36:28'),
+(19, 'Prawns', NULL, NULL, 1, NULL, '2024-11-18 11:36:42', '2024-11-18 11:36:42'),
+(20, 'vegetarian', NULL, NULL, 1, NULL, '2024-11-18 11:37:21', '2024-11-18 11:37:21'),
+(21, 'Meat Cookup', NULL, NULL, 1, NULL, '2024-11-18 11:38:02', '2024-11-18 11:38:02'),
+(22, 'Pastries', NULL, NULL, 1, NULL, '2024-11-18 11:38:15', '2024-11-18 11:38:15'),
+(23, 'Snacks', NULL, NULL, 1, NULL, '2024-11-18 11:38:33', '2024-11-18 11:38:33'),
+(24, 'Salads', NULL, NULL, 1, NULL, '2024-11-18 11:38:45', '2024-11-18 11:38:45'),
+(25, 'Beverages', NULL, NULL, 1, '#AA4D98', '2024-11-18 11:39:46', '2024-11-18 11:39:46'),
+(26, 'Local Juices', NULL, NULL, 1, NULL, '2024-11-18 11:40:03', '2024-11-18 11:40:03'),
+(27, 'Eco Meal/Chicken', NULL, NULL, 1, NULL, '2024-11-18 11:40:26', '2024-11-18 11:40:26'),
+(28, 'Eco Meal/Beef', NULL, NULL, 1, NULL, '2024-11-18 11:40:44', '2024-11-18 11:40:44'),
+(29, 'Eco Meal/Fish', NULL, NULL, 1, NULL, '2024-11-18 11:41:12', '2024-11-18 11:41:12'),
+(30, 'Cross Burns', NULL, NULL, 1, NULL, '2024-11-18 11:41:33', '2024-11-18 11:41:33'),
+(31, 'Mother\'s Day', NULL, NULL, 1, NULL, '2024-11-18 11:42:06', '2024-11-18 11:42:06'),
+(32, 'Father\'s Day', NULL, NULL, 1, NULL, '2024-11-18 11:42:17', '2024-11-18 11:42:17'),
+(33, 'Valentine Day', NULL, NULL, 1, NULL, '2024-11-18 11:42:35', '2024-11-18 11:42:35'),
+(34, 'Food Boxes', NULL, NULL, 1, NULL, '2024-11-18 11:42:51', '2024-11-18 11:42:51'),
+(35, 'Cups', NULL, NULL, 1, '#4066FF', '2024-11-18 11:43:01', '2024-11-18 11:43:01'),
+(36, 'Soup Bowls', NULL, NULL, 1, NULL, '2024-11-18 11:43:45', '2024-11-18 11:43:45'),
+(37, 'Metem Bowls', NULL, NULL, 1, NULL, '2024-11-18 11:44:09', '2024-11-18 11:44:09'),
+(38, 'Plastic Containers', NULL, NULL, 1, NULL, '2024-11-18 11:44:31', '2024-11-18 11:44:31'),
+(39, 'Delivery', NULL, NULL, 1, NULL, '2024-11-18 11:44:43', '2024-11-18 11:44:43'),
+(40, 'Boxes', NULL, NULL, 1, '#FFF5EE', '2024-11-18 13:24:26', '2024-11-18 13:24:26'),
+(41, 'Bowls', NULL, NULL, 1, NULL, '2024-11-18 13:24:36', '2024-11-18 13:24:36'),
+(42, 'admin', NULL, NULL, 1, '#2E5FFF', '2025-02-20 11:48:33', '2025-02-20 11:48:33'),
+(43, 'testt', NULL, NULL, 1, NULL, '2025-02-20 11:49:11', '2025-02-20 11:49:11'),
+(45, 'demo cat with color', NULL, NULL, 1, '#FF5112', '2025-02-20 12:05:29', '2025-02-20 12:05:29');
 
 -- --------------------------------------------------------
 
@@ -3753,7 +3757,7 @@ ALTER TABLE `cash_registers`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `challans`
